@@ -1,13 +1,23 @@
 {
   "name": "note-graph",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
+    "bootstrap": "yarn && cd demo && yarn",
     "dev": "cd demo && yarn serve",
-    "build": "tsdx build --format umd --name NOTE_GRAPH"
+    "build": "microbundle --name NOTE_GRAPH"
   },
+  "source": "src/index.ts",
+  "umd:main": "dist/note-graph.umd.js",
+  "files": [
+    "dist"
+  ],
+  "typings": "dist/type.d.ts",
+  "author": "hikerpig",
   "dependencies": {
     "d3": "^6.2.0",
     "force-graph": "^1.35.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "microbundle": "^0.12.4"
+  }
 }
