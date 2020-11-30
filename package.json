@@ -3,23 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "cd demo && yarn serve",
-    "build": "vite build"
+    "build": "tsdx build --format umd --name NOTE_GRAPH"
   },
   "dependencies": {
+    "d3": "^6.2.0",
+    "force-graph": "^1.35.1"
   },
-  "devDependencies": {
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    },
-    "rules": {}
-  }
+  "devDependencies": {}
 }

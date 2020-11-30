@@ -6,8 +6,10 @@
     "allowJs": true,
     "importHelpers": true,
     "moduleResolution": "node",
+    "noImplicitAny": false,
     "paths": {
       "demo/*": ["./demo"]
-    }
+    },
+    "noEmit": true
   }
 }

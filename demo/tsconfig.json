@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -18,8 +17,7 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "@/note-graph": ["../src/index"]
+      ]
     },
     "lib": [
       "esnext",
