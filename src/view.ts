@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import ForceGraph, { ForceGraphInstance } from 'force-graph'
+import ForceGraph, { ForceGraphInstance, LinkObject, NodeObject } from 'force-graph'
 import { NodeId, LinkId, GraphViewModel, GraphLink, GraphViewData } from './type'
 
 export type LinkState = 'regular' | 'lessened' | 'highlighted'
@@ -17,7 +17,7 @@ interface GraphModelActions {
 
 type InteractionCallbackName = 'nodeClick' | 'linkClick' | 'backgroundClick'
 
-const sizeScale = d3.scaleLinear().domain([0, 20]).range([1, 8]).clamp(true)
+const sizeScale = d3.scaleLinear().domain([0, 20]).range([1, 5]).clamp(true)
 
 const labelAlpha = d3.scaleLinear().domain([1.2, 2]).range([0, 1]).clamp(true)
 
@@ -25,6 +25,7 @@ export type GraphViewOptions = {
   container: HTMLElement
   width?: number
   height?: number
+  enableForDrag?: boolean
 }
 
 type GraphViewStyle = {
@@ -44,8 +45,10 @@ type GraphViewStyle = {
     regular?: string
     highlighted?: string
     lessened?: string
-    // inbound?: string
-    // outbound?: string
+    highlightedWithDirection?: {
+      inbound?: string
+      outbound?: string
+    }
   }
 }
 
@@ -110,6 +113,9 @@ export class NoteGraphView {
         unknown: this.getColorOnContainer('--vscode-editor-foreground', '#f94144'),
       },
       link: {
+        highlightedWithDirection: {
+          inbound: '#3078cd'
+        }
       }
     }
   }
@@ -172,13 +178,25 @@ export class NoteGraphView {
       }
     }
 
-    function getLinkColor(link, model: GraphViewModel) {
+    function getLinkNodeId(v: LinkObject['source']) {
+      const t = typeof v
+      return (t === 'string' || t === 'number') ? v: (v as NodeObject).id
+    }
+
+    function getLinkColor(link: LinkObject, model: GraphViewModel) {
       const linkStyle = style.link
       switch (getLinkState(link, model)) {
         case 'regular':
           return linkStyle.regular || d3.hsl(style.node.note.regular).darker(0.1)
         case 'highlighted':
-          return linkStyle.highlighted || style.highlightedForeground
+          let linkColorByDirection: string
+          if (model.hoverNode === getLinkNodeId(link.source)) {
+            linkColorByDirection = linkStyle.highlightedWithDirection?.outbound
+          } else if (model.hoverNode === getLinkNodeId(link.target)) {
+            linkColorByDirection = linkStyle.highlightedWithDirection?.inbound
+          }
+
+          return linkColorByDirection || linkStyle.highlighted || style.highlightedForeground
         case 'lessened':
           return linkStyle.lessened || d3.hsl(style.node.note.lessened).darker(2)
         default:
@@ -196,7 +214,7 @@ export class NoteGraphView {
         : 'lessened'
     }
 
-    function getLinkState(link: GraphLink, model: GraphViewModel): LinkState {
+    function getLinkState(link, model: GraphViewModel): LinkState {
       return model.focusNodes.size === 0
         ? 'regular'
         : model.focusLinks.has(link.id)
@@ -207,12 +225,15 @@ export class NoteGraphView {
     const width = options.width || window.innerWidth - this.container.offsetLeft - 20
     const height = options.height || window.innerHeight - this.container.offsetTop - 20
 
+    let hasInitialZoomToFit = false
+
     forceGraph(this.container)
       .height(height)
       .width(width)
       .graphData(model.graphData)
       .backgroundColor(style.background)
       .linkHoverPrecision(8)
+      .enableNodeDrag(!!options.enableForDrag)
       .cooldownTime(2000)
       .d3Force('x', d3.forceX())
       .d3Force('y', d3.forceY())
@@ -220,7 +241,7 @@ export class NoteGraphView {
       .linkWidth(1)
       .linkDirectionalParticles(1)
       .linkDirectionalParticleWidth((link) =>
-        getLinkState(link as GraphLink, model) === 'highlighted' ? 1 : 0
+        getLinkState(link as GraphLink, model) === 'highlighted' ? 2 : 0
       )
       .nodeCanvasObject((node, ctx, globalScale) => {
         if (!node.id) return
@@ -240,7 +261,13 @@ export class NoteGraphView {
           .circle(node.x, node.y, size, fill)
           .text(label, node.x, node.y + size + 1, fontSize, textColor)
       })
-      .linkColor((link) => getLinkColor(link, this.model))
+      .linkColor((link) => getLinkColor(link as GraphLink, this.model))
+      .onEngineStop(() => {
+        if (!hasInitialZoomToFit) {
+          hasInitialZoomToFit = true
+          forceGraph.zoomToFit(1000, 20)
+        }
+      })
       .onNodeHover((node) => {
         actions.highlightNode(this.model, node?.id)
         this.updateViewModeInteractiveState()
@@ -257,9 +284,6 @@ export class NoteGraphView {
         actions.selectNode(this.model, null, event.getModifierState('Shift'))
         this.updateViewModeInteractiveState()
         this.fireInteraction('backgroundClick', event)
-      })
-      .onEngineStop(() => {
-        forceGraph.zoomToFit(1000, 20)
       })
 
     this.forceGraph = forceGraph
