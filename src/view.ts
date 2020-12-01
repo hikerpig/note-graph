@@ -1,10 +1,10 @@
 import * as d3 from 'd3'
 import ForceGraph, { ForceGraphInstance } from 'force-graph'
-import { NodeId, LinkId, GraphViewModel, GraphLink } from './type'
+import { NodeId, LinkId, GraphViewModel, GraphLink, GraphViewData } from './type'
 
-type LinkState = 'regular' | 'lessened' | 'highlighted'
+export type LinkState = 'regular' | 'lessened' | 'highlighted'
 
-type NodeState = 'regular' | 'lessened' | 'highlighted'
+export type NodeState = 'regular' | 'lessened' | 'highlighted'
 
 interface GraphModelActions {
   selectNode(
@@ -15,41 +15,44 @@ interface GraphModelActions {
   highlightNode(model: GraphViewModel, id: NodeId | undefined): void
 }
 
-function getStyle(name, fallback) {
-  return (
-    getComputedStyle(document.documentElement).getPropertyValue(name) ||
-    fallback
-  )
-}
-
-const sizeScale = d3.scaleLinear().domain([0, 30]).range([1, 3]).clamp(true)
+const sizeScale = d3.scaleLinear().domain([0, 20]).range([1, 8]).clamp(true)
 
 const labelAlpha = d3.scaleLinear().domain([1.2, 2]).range([0, 1]).clamp(true)
 
-type GraphViewOptions = {
+export type GraphViewOptions = {
   container: HTMLElement
+  width?: number
+  height?: number
+}
+
+type GraphViewStyle = {
+  background: string
+  fontSize: number
+  highlightedForeground: string
+  node: {
+    note: {
+      regular: string
+      highlighted?: string
+      lessened?: string
+    }
+    nonExistingNote: string
+    unknown: string
+  }
+  link: {
+    regular?: string
+    highlighted?: string
+    lessened?: string
+    // inbound?: string
+    // outbound?: string
+  }
 }
 
 export class NoteGraphView {
+  options: GraphViewOptions
   container: HTMLElement
   forceGraph: ForceGraphInstance
   model: GraphViewModel
-  style = {
-    background: getStyle(`--vscode-panel-background`, '#202020'),
-    fontSize: parseInt(getStyle(`--vscode-font-size`, 12)),
-    highlightedForeground: getStyle(
-      '--vscode-list-highlightForeground',
-      '#f9c74f'
-    ),
-    node: {
-      note: getStyle('--vscode-editor-foreground', '#277da1'),
-      nonExistingNote: getStyle(
-        '--vscode-list-deemphasizedForeground',
-        '#545454'
-      ),
-      unknown: getStyle('--vscode-editor-foreground', '#f94144'),
-    },
-  }
+  style: GraphViewStyle
 
   actions: GraphModelActions = {
     selectNode(model: GraphViewModel, nodeId: NodeId | undefined, isAppend) {
@@ -66,6 +69,7 @@ export class NoteGraphView {
   }
 
   constructor(opts: GraphViewOptions) {
+    this.options = opts
     this.container = opts.container
 
     this.model = {
@@ -78,25 +82,52 @@ export class NoteGraphView {
       focusNodes: new Set(),
       focusLinks: new Set(),
       hoverNode: null,
-      adjacentMap: new Map(),
+    }
+
+    this.initStyle()
+  }
+
+  initStyle() {
+    this.style = {
+      background: this.getColorOnContainer(`--vscode-panel-background`, '#f7f7f7'),
+      fontSize: parseInt(this.getColorOnContainer(`--vscode-font-size`, 12)),
+      highlightedForeground: this.getColorOnContainer(
+        '--vscode-list-highlightForeground',
+        '#f9c74f'
+      ),
+      node: {
+        note: {
+          regular: this.getColorOnContainer('--vscode-editor-foreground', '#277da1'),
+        },
+        nonExistingNote: this.getColorOnContainer(
+          '--vscode-list-deemphasizedForeground',
+          '#545454'
+        ),
+        unknown: this.getColorOnContainer('--vscode-editor-foreground', '#f94144'),
+      },
+      link: {
+      }
     }
   }
 
-  updateViewModel(partialModel: Pick<GraphViewModel, 'graphData' | 'nodeInfos'>) {
-    Object.assign(this.model, partialModel)
+  protected getColorOnContainer(name, fallback): string {
+    return (
+      getComputedStyle(document.documentElement).getPropertyValue(name) ||
+      fallback
+    )
+  }
 
-    const adjacentMap = new Map<NodeId, NodeId[]>()
-    partialModel.graphData.links.forEach((link) => {
-      const targetNodeIds = adjacentMap.get(link.source) || []
-      targetNodeIds.push(link.target)
-    })
+  updateViewData(dataInput: GraphViewData) {
+    Object.assign(this.model, dataInput)
 
-    this.model.adjacentMap = adjacentMap
+    if (dataInput.focusedNode) {
+      this.model.hoverNode = dataInput.focusedNode
+    }
   }
 
   initView() {
+    const { options, model, style, actions } = this
     const forceGraph = ForceGraph()
-    const { model, style, actions } = this
 
     const makeDrawWrapper = (ctx) => ({
       circle: function (x, y, radius, color) {
@@ -119,13 +150,14 @@ export class NoteGraphView {
 
     function getNodeColor(nodeId, model: GraphViewModel) {
       const info = model.nodeInfos[nodeId]
+      const noteStyle = style.node.note
       const typeFill = style.node[info.type || 'unknown']
       switch (getNodeState(nodeId, model)) {
         case 'regular':
           return { fill: typeFill, border: typeFill }
         case 'lessened':
-          const darker = d3.hsl(typeFill).darker(3)
-          return { fill: darker, border: darker }
+          const color = noteStyle.lessened || d3.hsl(typeFill).darker(3)
+          return { fill: color, border: color }
         case 'highlighted':
           return {
             fill: typeFill,
@@ -137,13 +169,14 @@ export class NoteGraphView {
     }
 
     function getLinkColor(link, model: GraphViewModel) {
+      const linkStyle = style.link
       switch (getLinkState(link, model)) {
         case 'regular':
-          return d3.hsl(style.node.note).darker(2)
+          return linkStyle.regular || d3.hsl(style.node.note.regular).darker(0.1)
         case 'highlighted':
-          return style.highlightedForeground
+          return linkStyle.highlighted || style.highlightedForeground
         case 'lessened':
-          return d3.hsl(style.node.note).darker(4)
+          return linkStyle.lessened || d3.hsl(style.node.note.lessened).darker(2)
         default:
           throw new Error(`Unknown type for link ${link}`)
       }
@@ -167,14 +200,20 @@ export class NoteGraphView {
         : 'lessened'
     }
 
+    const width = options.width || window.innerWidth - this.container.offsetLeft - 20
+    const height = options.height || window.innerHeight - this.container.offsetTop - 20
+
     forceGraph(this.container)
+      .height(height)
+      .width(width)
       .graphData(model.graphData)
       .backgroundColor(style.background)
       .linkHoverPrecision(8)
+      .cooldownTime(2000)
       .d3Force('x', d3.forceX())
       .d3Force('y', d3.forceY())
       .d3Force('collide', d3.forceCollide(forceGraph.nodeRelSize()))
-      .linkWidth(0.5)
+      .linkWidth(1)
       .linkDirectionalParticles(1)
       .linkDirectionalParticleWidth((link) =>
         getLinkState(link as GraphLink, model) === 'highlighted' ? 1 : 0
@@ -200,19 +239,24 @@ export class NoteGraphView {
       .linkColor((link) => getLinkColor(link, this.model))
       .onNodeHover((node) => {
         actions.highlightNode(this.model, node?.id)
-        this.updateView()
+        this.updateViewModeInteractiveState()
       })
       .onNodeClick((node, event) => {
         actions.selectNode(this.model, node.id, event.getModifierState('Shift'))
-        this.updateView()
+        this.updateViewModeInteractiveState()
       })
       .onBackgroundClick((event) => {
         actions.selectNode(this.model, null, event.getModifierState('Shift'))
-        this.updateView()
+        this.updateViewModeInteractiveState()
       })
+      .onEngineStop(() => {
+        forceGraph.zoomToFit(1000, 20)
+      })
+
+    this.forceGraph = forceGraph
   }
 
-  updateView() {
+  protected updateViewModeInteractiveState() {
     const { model } = this
     // compute highlighted elements
     const focusNodes = new Set<NodeId>()

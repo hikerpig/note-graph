@@ -1,5 +1,6 @@
 <template>
 <div>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css">
   <GraphIntroduction></GraphIntroduction>
 </div>
 </template>

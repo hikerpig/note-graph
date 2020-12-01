@@ -3,7 +3,7 @@ import {
   GraphNode,
   GraphLink,
   GraphNodeInfo,
-  GraphViewModelInput,
+  GraphViewData,
 } from './type'
 
 export type Note = {
@@ -26,7 +26,7 @@ export class NoteGraphModel {
     return `${sourceId}-${targetId}`
   }
 
-  toGraphViewModel(): GraphViewModelInput {
+  toGraphViewData(): GraphViewData {
     const nodes: GraphNode<{ note: Note }>[] = []
     const links: GraphLink[] = []
     const nodeInfos: { [K in NodeId]: GraphNodeInfo } = {}
@@ -61,7 +61,7 @@ export class NoteGraphModel {
       nodeInfos[note.id] = nodeInfo
     })
 
-    const vm: GraphViewModelInput = {
+    const vm: GraphViewData = {
       graphData: {
         nodes: this.notes,
         links,

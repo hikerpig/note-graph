@@ -25,17 +25,24 @@ export type NoteGraphData = {
   links: GraphLink[]
 }
 
-export interface GraphViewModelInput {
+/**
+ * Part of the GraphViewModel that can be provided as data input
+ */
+export interface GraphViewData {
+  /** data for d3 ForceGraph */
   graphData: NoteGraphData
   nodeInfos: {[K in NodeId]: GraphNodeInfo}
+  focusedNode?: NodeId | null
 }
 
-export interface GraphViewModel extends GraphViewModelInput {
+/**
+ * states of the NoteGraphView
+ */
+export interface GraphViewModel extends GraphViewData {
   selectedNodes: Set<NodeId>
   /** For computing highlight */
   focusNodes: Set<NodeId>
   hoverNode: NodeId | null
   /** For computing highlight */
   focusLinks: Set<LinkId>
-  adjacentMap: Map<NodeId, NodeId[]>
 }
