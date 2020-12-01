@@ -15,7 +15,6 @@ export const Basic = () => {
     <div>
       <GraphView
         graphModel={graphModel}
-        showStyleEditor
       ></GraphView>
     </div>
   )
