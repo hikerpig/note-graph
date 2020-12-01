@@ -1,28 +1,38 @@
-import React from 'react';
-import { GraphViewOptions } from '../../../src';
+import React from 'react'
+import { GraphViewOptions } from '../../../src'
 import GraphView from '../components/GraphView'
 import notes from '../data/example-notes'
-import { Note, NoteGraphModel } from '../note-graph'
+import { NoteGraphModel } from '../note-graph'
 
 export default {
   title: 'Example',
   component: GraphView,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-};
-
-type BasicProps = {
-  backgroundColor: string
 }
 
-export const Basic = (props: BasicProps) => {
+export const Basic = () => {
+  const graphModel = new NoteGraphModel(notes)
+  return (
+    <div>
+      <GraphView
+        graphModel={graphModel}
+        showStyleEditor
+      ></GraphView>
+    </div>
+  )
+}
+
+
+export const EnableNodeDrag = () => {
   const graphModel = new NoteGraphModel(notes)
   const graphViewOptions: Omit<GraphViewOptions, 'container'> = {
+    enableForDrag: true,
   }
-  return <GraphView graphModel={graphModel} graphViewOptions={graphViewOptions}></GraphView>
-}
-
-Basic.args = {
-  backgroundColor: '#f9f9f9'
+  return (
+    <div>
+      <GraphView
+        graphModel={graphModel}
+        graphViewOptions={graphViewOptions}
+      ></GraphView>
+    </div>
+  )
 }

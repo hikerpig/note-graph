@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import ForceGraph, { ForceGraphInstance, LinkObject, NodeObject } from 'force-graph'
 import { NodeId, LinkId, GraphViewModel, GraphLink, GraphViewData } from './type'
+import { RecursivePartial, mergeObjects } from './util'
 
 export type LinkState = 'regular' | 'lessened' | 'highlighted'
 
@@ -23,12 +24,13 @@ const labelAlpha = d3.scaleLinear().domain([1.2, 2]).range([0, 1]).clamp(true)
 
 export type GraphViewOptions = {
   container: HTMLElement
+  style?: RecursivePartial<GraphViewStyle>
   width?: number
   height?: number
   enableForDrag?: boolean
 }
 
-type GraphViewStyle = {
+export type GraphViewStyle = {
   background: string
   fontSize: number
   highlightedForeground: string
@@ -94,29 +96,41 @@ export class NoteGraphView {
     this.initStyle()
   }
 
-  initStyle() {
-    this.style = {
-      background: this.getColorOnContainer(`--vscode-panel-background`, '#f7f7f7'),
-      fontSize: parseInt(this.getColorOnContainer(`--vscode-font-size`, 12)),
-      highlightedForeground: this.getColorOnContainer(
-        '--vscode-list-highlightForeground',
-        '#f9c74f'
-      ),
-      node: {
-        note: {
-          regular: this.getColorOnContainer('--vscode-editor-foreground', '#277da1'),
-        },
-        nonExistingNote: this.getColorOnContainer(
-          '--vscode-list-deemphasizedForeground',
-          '#545454'
+  protected initStyle() {
+    if (!this.style) {
+      this.style = {
+        background: this.getColorOnContainer(`--vscode-panel-background`, '#f7f7f7'),
+        fontSize: parseInt(this.getColorOnContainer(`--vscode-font-size`, 12)),
+        highlightedForeground: this.getColorOnContainer(
+          '--vscode-list-highlightForeground',
+          '#f9c74f'
         ),
-        unknown: this.getColorOnContainer('--vscode-editor-foreground', '#f94144'),
-      },
-      link: {
-        highlightedWithDirection: {
-          inbound: '#3078cd'
+        node: {
+          note: {
+            regular: this.getColorOnContainer('--vscode-editor-foreground', '#277da1'),
+          },
+          nonExistingNote: this.getColorOnContainer(
+            '--vscode-list-deemphasizedForeground',
+            '#545454'
+          ),
+          unknown: this.getColorOnContainer('--vscode-editor-foreground', '#f94144'),
+        },
+        link: {
+          highlightedWithDirection: {
+            inbound: '#3078cd'
+          }
         }
       }
+    }
+    mergeObjects<GraphViewStyle>(this.style, this.options.style)
+  }
+
+  updateStyle(style: RecursivePartial<GraphViewStyle>) {
+    this.options.style = mergeObjects(this.options.style || {}, style)
+    this.initStyle()
+
+    if (this.forceGraph) {
+      this.forceGraph.backgroundColor(this.style.background)
     }
   }
 
@@ -289,6 +303,29 @@ export class NoteGraphView {
     this.forceGraph = forceGraph
   }
 
+  protected updateViewModeInteractiveState() {
+    const { model } = this
+    // compute highlighted elements
+    const focusNodes = new Set<NodeId>()
+    const focusLinks = new Set<LinkId>()
+    if (model.hoverNode) {
+      focusNodes.add(model.hoverNode)
+      const info = model.nodeInfos[model.hoverNode]
+      info.neighbors?.forEach((neighborId) => focusNodes.add(neighborId))
+      info.linkIds?.forEach((link) => focusLinks.add(link))
+    }
+    if (model.selectedNodes) {
+      model.selectedNodes.forEach((nodeId) => {
+        focusNodes.add(nodeId)
+        const info = model.nodeInfos[nodeId]
+        info.neighbors?.forEach((neighborId) => focusNodes.add(neighborId))
+        info.linkIds?.forEach((link) => focusLinks.add(link))
+      })
+    }
+    model.focusNodes = focusNodes
+    model.focusLinks = focusLinks
+  }
+
   onInteraction(name: InteractionCallbackName, cb) {
     if (!this.interactionCallbacks[name]) this.interactionCallbacks[name] = []
     const callbackList = this.interactionCallbacks[name]
@@ -311,26 +348,9 @@ export class NoteGraphView {
     }
   }
 
-  protected updateViewModeInteractiveState() {
-    const { model } = this
-    // compute highlighted elements
-    const focusNodes = new Set<NodeId>()
-    const focusLinks = new Set<LinkId>()
-    if (model.hoverNode) {
-      focusNodes.add(model.hoverNode)
-      const info = model.nodeInfos[model.hoverNode]
-      info.neighbors?.forEach((neighborId) => focusNodes.add(neighborId))
-      info.linkIds?.forEach((link) => focusLinks.add(link))
+  dispose() {
+    if (this.forceGraph) {
+      this.forceGraph.pauseAnimation()
     }
-    if (model.selectedNodes) {
-      model.selectedNodes.forEach((nodeId) => {
-        focusNodes.add(nodeId)
-        const info = model.nodeInfos[nodeId]
-        info.neighbors?.forEach((neighborId) => focusNodes.add(neighborId))
-        info.linkIds?.forEach((link) => focusLinks.add(link))
-      })
-    }
-    model.focusNodes = focusNodes
-    model.focusLinks = focusLinks
   }
 }

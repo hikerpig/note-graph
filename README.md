@@ -9,7 +9,6 @@ It aims to be a handy tool for anyone who's interested in building a graph view 
 
 It is based on D3 [force-graph](https://github.com/vasturiano/force-graph), written in Typescript and can be used in the browser.
 
-
 Inspired by [Foam](https://github.com/foambubble/foam).
 
 ## Develop
