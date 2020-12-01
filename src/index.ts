@@ -1,4 +1,6 @@
-export { NoteGraphModel, Note } from './note-graph-model'
+export { NoteGraphModel } from './note-graph-model'
+
+export type { Note } from './note-graph-model'
 
 export * from './type'
 

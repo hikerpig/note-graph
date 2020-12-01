@@ -2,8 +2,8 @@
   "name": "note-graph-demo",
   "private": true,
   "scripts": {
-    "start": "yarn storybook",
-    "build": "yarn build-storybook",
+    "start": "yarn run storybook",
+    "build": "yarn run build-storybook",
     "storybook": "npx start-storybook -p 6006",
     "build-storybook": "npx build-storybook"
   },
