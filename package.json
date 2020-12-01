@@ -6,6 +6,7 @@
     "dev": "cd demo && yarn start",
     "build": "microbundle --name NOTE_GRAPH",
     "build-demo": "cd demo && yarn build",
+    "ci-build": "cd demo && yarn && yarn build",
     "lint": "eslint src/**/*.ts"
   },
   "source": "src/index.ts",
