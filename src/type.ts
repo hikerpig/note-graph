@@ -1,6 +1,6 @@
 export type NodeId = string | number
 
-export type LinkId = NodeId
+export type LinkId = string | number
 
 export type GraphNode<D> = {
   id: NodeId

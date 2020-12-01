@@ -7,6 +7,8 @@ interface Props {
   graphModel: NoteGraphModel
   graphViewOptions?: Omit<GraphViewOptions, 'container'>
   showStyleEditor?: boolean
+  customInitGraphView?(container: HTMLDivElement): NoteGraphView
+  onGraphViewInit?(view: NoteGraphView): void
 }
 
 const GraphView = (props: Props) => {
@@ -15,13 +17,19 @@ const GraphView = (props: Props) => {
 
   function initView() {
     if (view) view.dispose()
-    const newView = new NoteGraphView({
-      container: graphViewWrap.current,
-      ...(props.graphViewOptions || {}),
-    })
-    newView.updateViewData(props.graphModel.toGraphViewData())
-    newView.initView()
+    let newView: NoteGraphView
+    if (props.customInitGraphView) {
+      newView = props.customInitGraphView(graphViewWrap.current)
+    } else {
+      newView = new NoteGraphView({
+        container: graphViewWrap.current,
+        ...(props.graphViewOptions || {}),
+      })
+      newView.updateViewData(props.graphModel.toGraphViewData())
+      newView.initView()
+    }
     setView(newView)
+    if (props.onGraphViewInit) props.onGraphViewInit(newView)
   }
 
   const [style, setStyle] = useState({})

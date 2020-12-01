@@ -11,6 +11,9 @@ It is based on D3 [force-graph](https://github.com/vasturiano/force-graph), writ
 
 Inspired by [Foam](https://github.com/foambubble/foam).
 
+## Demo 🚀
+
+See the [demo on vercel](http://note-graph.vercel.app/).
 ## Develop
 
 Install dependendies:

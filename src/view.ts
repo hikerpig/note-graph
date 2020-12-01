@@ -16,7 +16,7 @@ interface GraphModelActions {
   highlightNode(model: GraphViewModel, id: NodeId | undefined): void
 }
 
-type InteractionCallbackName = 'nodeClick' | 'linkClick' | 'backgroundClick'
+type InteractionCallbackName = 'nodeClick' | 'linkClick' | 'backgroundClick' | 'backgroundRightClick'
 
 const sizeScale = d3.scaleLinear().domain([0, 20]).range([1, 5]).clamp(true)
 
@@ -47,6 +47,8 @@ export type GraphViewStyle = {
     regular?: string
     highlighted?: string
     lessened?: string
+  }
+  hoverNodeLink: {
     highlightedWithDirection?: {
       inbound?: string
       outbound?: string
@@ -115,7 +117,8 @@ export class NoteGraphView {
           ),
           unknown: this.getColorOnContainer('--vscode-editor-foreground', '#f94144'),
         },
-        link: {
+        link: {},
+        hoverNodeLink: {
           highlightedWithDirection: {
             inbound: '#3078cd'
           }
@@ -201,13 +204,16 @@ export class NoteGraphView {
       const linkStyle = style.link
       switch (getLinkState(link, model)) {
         case 'regular':
-          return linkStyle.regular || d3.hsl(style.node.note.regular).darker(0.1)
+          return linkStyle.regular || '#999'
         case 'highlighted':
+
+          // inbound/outbound link is a little bit different with hoverNode
           let linkColorByDirection: string
+          const hoverNodeLinkStyle = style.hoverNodeLink
           if (model.hoverNode === getLinkNodeId(link.source)) {
-            linkColorByDirection = linkStyle.highlightedWithDirection?.outbound
+            linkColorByDirection = hoverNodeLinkStyle.highlightedWithDirection?.outbound
           } else if (model.hoverNode === getLinkNodeId(link.target)) {
-            linkColorByDirection = linkStyle.highlightedWithDirection?.inbound
+            linkColorByDirection = hoverNodeLinkStyle.highlightedWithDirection?.inbound
           }
 
           return linkColorByDirection || linkStyle.highlighted || style.highlightedForeground
@@ -248,7 +254,7 @@ export class NoteGraphView {
       .backgroundColor(style.background)
       .linkHoverPrecision(8)
       .enableNodeDrag(!!options.enableForDrag)
-      .cooldownTime(2000)
+      .cooldownTime(1000)
       .d3Force('x', d3.forceX())
       .d3Force('y', d3.forceY())
       .d3Force('collide', d3.forceCollide(forceGraph.nodeRelSize()))
@@ -289,15 +295,19 @@ export class NoteGraphView {
       .onNodeClick((node, event) => {
         actions.selectNode(this.model, node.id, event.getModifierState('Shift'))
         this.updateViewModeInteractiveState()
-        this.fireInteraction('nodeClick', event)
+        this.fireInteraction('nodeClick', { node, event })
       })
       .onLinkClick((link, event) => {
-        this.fireInteraction('linkClick', event)
+        this.fireInteraction('linkClick', { link, event })
       })
       .onBackgroundClick((event) => {
         actions.selectNode(this.model, null, event.getModifierState('Shift'))
         this.updateViewModeInteractiveState()
-        this.fireInteraction('backgroundClick', event)
+        this.fireInteraction('backgroundClick', { event })
+      })
+      .onBackgroundRightClick((event) => {
+        forceGraph.zoomToFit(1000, 20)
+        this.fireInteraction('backgroundRightClick', { event })
       })
 
     this.forceGraph = forceGraph
@@ -341,10 +351,10 @@ export class NoteGraphView {
     }
   }
 
-  fireInteraction(name: InteractionCallbackName, event) {
+  fireInteraction(name: InteractionCallbackName, payload) {
     const callbackList = this.interactionCallbacks[name]
     if (callbackList) {
-      callbackList.forEach((cb) => cb(event))
+      callbackList.forEach((cb) => cb(payload))
     }
   }
 
