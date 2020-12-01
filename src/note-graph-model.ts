@@ -17,7 +17,11 @@ export type Note = {
  * Can generate GraphViewModel by `toGraphViewModel`
  */
 export class NoteGraphModel {
-  constructor(public notes: Note[]) {}
+  notes: Note[]
+
+  constructor(notes: Note[]) {
+    this.notes = notes
+  }
 
   /**
    * A link's id is a combination of source node and target node's id

@@ -2,33 +2,32 @@
   "name": "note-graph-demo",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^3.0.0"
+    "start": "yarn storybook",
+    "build": "yarn build-storybook",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-transform-typescript": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.7",
+    "@storybook/addon-actions": "^6.1.9",
+    "@storybook/addon-essentials": "^6.1.9",
+    "@storybook/addon-links": "^6.1.9",
+    "@storybook/react": "^6.1.9",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^4",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "@vue/eslint-config-typescript": "^5.0.2",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "babel-preset-react-app": "^10.0.0",
     "eslint": "^7.14.0",
-    "eslint-plugin-vue": "^7.0.0-0"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "eslintConfig": {
     "root": false,
     "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended",
-      "@vue/typescript"
+      "eslint:recommended"
     ],
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
