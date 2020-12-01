@@ -4,9 +4,9 @@ module.exports = {
     node: true,
   },
   extends: [],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    parser: '@typescript-eslint/parser',
     sourceType: 'module',
-    ecmaVersion: 2015
+    ecmaVersion: 2015,
   },
 }

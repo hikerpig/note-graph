@@ -1,4 +1,6 @@
-# graph-demo
+# note graph demo
+
+Bootstraped by Vue CLI.
 
 ## Project setup
 ```

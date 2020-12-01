@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
-import { NoteGraphView, GraphViewOptions, Note, NoteGraphModel } from '../note-graph'
+import { NoteGraphView, GraphViewOptions, NoteGraphModel } from '../note-graph'
 
 export default defineComponent({
   name: 'GraphView',
