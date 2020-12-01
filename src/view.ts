@@ -15,6 +15,8 @@ interface GraphModelActions {
   highlightNode(model: GraphViewModel, id: NodeId | undefined): void
 }
 
+type InteractionCallbackName = 'nodeClick' | 'linkClick' | 'backgroundClick'
+
 const sizeScale = d3.scaleLinear().domain([0, 20]).range([1, 8]).clamp(true)
 
 const labelAlpha = d3.scaleLinear().domain([1.2, 2]).range([0, 1]).clamp(true)
@@ -53,6 +55,8 @@ export class NoteGraphView {
   forceGraph: ForceGraphInstance
   model: GraphViewModel
   style: GraphViewStyle
+
+  protected interactionCallbacks: Partial<Record<InteractionCallbackName, Array<(event) => void>>> = {}
 
   actions: GraphModelActions = {
     selectNode(model: GraphViewModel, nodeId: NodeId | undefined, isAppend) {
@@ -244,16 +248,43 @@ export class NoteGraphView {
       .onNodeClick((node, event) => {
         actions.selectNode(this.model, node.id, event.getModifierState('Shift'))
         this.updateViewModeInteractiveState()
+        this.fireInteraction('nodeClick', event)
+      })
+      .onLinkClick((link, event) => {
+        this.fireInteraction('linkClick', event)
       })
       .onBackgroundClick((event) => {
         actions.selectNode(this.model, null, event.getModifierState('Shift'))
         this.updateViewModeInteractiveState()
+        this.fireInteraction('backgroundClick', event)
       })
       .onEngineStop(() => {
         forceGraph.zoomToFit(1000, 20)
       })
 
     this.forceGraph = forceGraph
+  }
+
+  onInteraction(name: InteractionCallbackName, cb) {
+    if (!this.interactionCallbacks[name]) this.interactionCallbacks[name] = []
+    const callbackList = this.interactionCallbacks[name]
+    if (!callbackList.includes(cb)) {
+      callbackList.push(cb)
+    }
+
+    return () => {
+      const pos = callbackList.indexOf(cb)
+      if (pos > -1) {
+        callbackList.splice(pos, 1)
+      }
+    }
+  }
+
+  fireInteraction(name: InteractionCallbackName, event) {
+    const callbackList = this.interactionCallbacks[name]
+    if (callbackList) {
+      callbackList.forEach((cb) => cb(event))
+    }
   }
 
   protected updateViewModeInteractiveState() {
