@@ -24,6 +24,10 @@
     "visualization",
     "foam"
   ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/hikerpig/note-graph.git"
+  },
   "dependencies": {
     "d3": "^6.2.0",
     "force-graph": "^1.35.1"

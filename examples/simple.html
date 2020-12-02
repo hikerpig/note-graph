@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Note Graph simple example</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@6.2.0/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/force-graph@1.35.1/dist/force-graph.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/note-graph@latest/dist/note-graph.umd.js"></script>
+  </head>
+
+  <body>
+    <div id="note-graph-container"></div>
+    <script>
+      async function initGraphView() {
+        const notes = await (
+          await fetch(
+            'https://raw.githubusercontent.com/hikerpig/note-graph/master/demo/src/data/concept-data.json'
+          )
+        ).json()
+        const graphModel = new NOTE_GRAPH.NoteGraphModel(notes)
+
+        const graphView = new NOTE_GRAPH.NoteGraphView({
+          container: document.getElementById('note-graph-container'),
+          graphModel,
+          enableNodeDrag: true,
+        })
+      }
+
+      window.onload = function () {
+        initGraphView()
+      }
+    </script>
+  </body>
+</html>
