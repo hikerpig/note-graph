@@ -1,0 +1,12 @@
+.style-editor__field {
+  display: flex;
+
+}
+
+.style-editor__field label {
+  min-width: 25em;
+}
+
+.style-editor__field span {
+  margin-left: 10px;
+}

@@ -44,6 +44,7 @@
     "not dead"
   ],
   "dependencies": {
-    "beautiful-react-hooks": "^0.31.0"
+    "beautiful-react-hooks": "^0.31.0",
+    "react-hook-form": "^6.12.2"
   }
 }

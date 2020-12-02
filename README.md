@@ -21,7 +21,7 @@ See the [demo](http://note-graph.vercel.app/) on vercel.
 - Rich interaction
   - Hover on the node to see it's link flow.
   - Right click on the background to make the graph auto-fits the canvas size, easier to find contents when panning and scrolling makes you lost in the view.
-- 🎨 Highly customizable, pick your favorite colors for all the visual elements.
+- 🎨 Highly customizable, pick your favorite colors for <del>all</del> (not yet but closing to it) the visual elements.
 
 ## Usage
 

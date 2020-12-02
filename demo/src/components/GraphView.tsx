@@ -3,12 +3,10 @@ import { NoteGraphView, GraphViewOptions, NoteGraphModel } from '../note-graph'
 import useWindowResize from 'beautiful-react-hooks/useWindowResize'
 import useDebouncedFn from 'beautiful-react-hooks/useDebouncedFn'
 
-import StyleEditor from '../components/StyleEditor'
-
 interface Props {
   graphModel: NoteGraphModel
+  style?: any
   graphViewOptions?: Omit<GraphViewOptions, 'container'>
-  showStyleEditor?: boolean
   customInitGraphView?(container: HTMLDivElement): NoteGraphView
   onGraphViewInit?(view: NoteGraphView): void
 }
@@ -17,6 +15,7 @@ interface Props {
  * A wrapper react component for the demo
  */
 const GraphView = (props: Props) => {
+  const { style } = props
   const graphViewWrap = useRef<HTMLDivElement>(null)
   const [view, setView] = useState<NoteGraphView>(null)
 
@@ -32,6 +31,7 @@ const GraphView = (props: Props) => {
       newView = new NoteGraphView({
         container: graphViewWrap.current,
         graphModel: props.graphModel,
+        style,
         ...(props.graphViewOptions || {}),
       })
     }
@@ -39,7 +39,13 @@ const GraphView = (props: Props) => {
     if (props.onGraphViewInit) props.onGraphViewInit(newView)
   }
 
-  const [style, setStyle] = useState({})
+  useEffect(() => {
+    if (view) {
+      view.updateStyle(style)
+    }
+    return () => {
+    };
+  }, [style]);
 
   useEffect(() => {
     initNewView()
@@ -47,16 +53,11 @@ const GraphView = (props: Props) => {
   }, [graphViewWrap])
 
   useEffect(() => {
-    if (!view) return
-
-    view.updateStyle(style)
-  }, [style])
-
-  useEffect(() => {
     return () => {
+      // console.log('graph view cleanup')
       if (view) view.dispose()
     }
-  })
+  }, [])
 
   let startTime = Date.now()
   const deboundedWindowResizeHandler = useDebouncedFn(() => {
@@ -75,10 +76,6 @@ const GraphView = (props: Props) => {
 
   return (
     <div className="graph-view">
-      {props.showStyleEditor ? (
-        <StyleEditor style={style} onChange={(s) => setStyle(s)}></StyleEditor>
-      ) : null}
-
       <div ref={graphViewWrap}></div>
     </div>
   )
