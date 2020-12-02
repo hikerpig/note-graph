@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions'
 import { GraphViewOptions, NoteGraphView } from '../../../src'
 import GraphView from '../components/GraphView'
 import notes from '../data/example-notes.json'
-import FOAM_NOTES from '../data/foam-notes.json'
+import CONCEPT_DATA from '../data/concept-data.json'
 import { NoteGraphModel } from '../note-graph'
 
 export default {
@@ -12,7 +12,7 @@ export default {
 }
 
 export const Basic = () => {
-  const graphModel = new NoteGraphModel(notes)
+  const graphModel = new NoteGraphModel(CONCEPT_DATA)
   return (
     <div>
       <GraphView
@@ -25,7 +25,7 @@ export const Basic = () => {
 export const EnableNodeDrag = () => {
   const graphModel = new NoteGraphModel(notes)
   const graphViewOptions: Omit<GraphViewOptions, 'container'> = {
-    enableForDrag: true,
+    enableNodeDrag: true,
   }
   return (
     <div>

@@ -33,7 +33,7 @@ type InteractionCallbackName =
   | 'backgroundClick'
   | 'backgroundRightClick'
 
-const sizeScaler = d3.scaleLinear().domain([0, 20]).range([1, 4]).clamp(true)
+const sizeScaler = d3.scaleLinear().domain([0, 20]).range([1, 5]).clamp(true)
 
 const labelAlphaScaler = d3
   .scaleLinear()
@@ -48,7 +48,7 @@ export type GraphViewOptions = {
   style?: RecursivePartial<GraphViewStyle>
   width?: number
   height?: number
-  enableForDrag?: boolean
+  enableNodeDrag?: boolean
 }
 
 export type GraphViewStyle = {
@@ -354,7 +354,7 @@ export class NoteGraphView {
       .graphData(model.graphData)
       .backgroundColor(style.background)
       .linkHoverPrecision(8)
-      .enableNodeDrag(!!options.enableForDrag)
+      .enableNodeDrag(!!options.enableNodeDrag)
       .cooldownTime(200)
       .d3Force('x', d3.forceX())
       .d3Force('y', d3.forceY())

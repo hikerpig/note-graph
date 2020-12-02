@@ -11,7 +11,7 @@ export default {
 export const Foam = () => {
   const graphModel = new NoteGraphModel(FOAM_NOTES)
   const graphViewOptions: Partial<GraphViewOptions> = {
-    enableForDrag: true,
+    enableNodeDrag: true,
   }
   return (
     <div>
