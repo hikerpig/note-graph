@@ -1,7 +1,7 @@
 {
   "name": "note-graph",
   "description": "a generic visualization tool designed to show the structure of the document space and the relations between each doc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "cd demo && yarn start",
@@ -25,8 +25,8 @@
     "foam"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/hikerpig/note-graph.git"
+    "type": "git",
+    "url": "https://github.com/hikerpig/note-graph.git"
   },
   "dependencies": {
     "d3": "^6.2.0",

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/hikerpig/note-graph/compare/v0.0.2...v0.0.3) (2020-12-02)
+
+
+### Features
+
+* change default color theme and add a style editor in storybook ([7777d83](https://github.com/hikerpig/note-graph/commit/7777d83330078ed7aae303c046fc3e44c43832d3))
+
 ### [0.0.2](https://gitlab.com/hikerpig/note-graph/compare/v0.0.1...v0.0.2) (2020-12-02)
 
 
