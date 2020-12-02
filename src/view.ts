@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import ForceGraph, { ForceGraphInstance, LinkObject, NodeObject } from 'force-graph'
 import { NodeId, LinkId, GraphViewModel, GraphLink, GraphViewData } from './type'
+import { NoteGraphModel } from './note-graph-model'
 import { RecursivePartial, mergeObjects } from './util'
 
 export type LinkState = 'regular' | 'lessened' | 'highlighted'
@@ -24,6 +25,8 @@ const labelAlpha = d3.scaleLinear().domain([1.2, 2]).range([0, 1]).clamp(true)
 
 export type GraphViewOptions = {
   container: HTMLElement
+  lazyInitView?: boolean
+  graphModel?: NoteGraphModel
   style?: RecursivePartial<GraphViewStyle>
   width?: number
   height?: number
@@ -68,6 +71,8 @@ export class NoteGraphView {
   model: GraphViewModel
   style: GraphViewStyle
 
+  protected currentDataModelEntry?: { graphModel: NoteGraphModel, unsub: () => void }
+
   protected interactionCallbacks: Partial<Record<InteractionCallbackName, Array<(event) => void>>> = {}
 
   actions: GraphModelActions = {
@@ -101,6 +106,13 @@ export class NoteGraphView {
     }
 
     this.initStyle()
+
+    if (opts.graphModel) {
+      this.linkWithGraphModel(opts.graphModel)
+      if (!opts.lazyInitView) {
+        this.initView()
+      }
+    }
   }
 
   protected initStyle() {
@@ -138,6 +150,22 @@ export class NoteGraphView {
 
     if (this.forceGraph) {
       this.forceGraph.backgroundColor(this.style.background)
+    }
+  }
+
+  linkWithGraphModel(graphModel: NoteGraphModel) {
+    if (this.currentDataModelEntry) {
+      this.currentDataModelEntry.unsub()
+    }
+
+    this.updateViewData(graphModel.toGraphViewData())
+
+    const unsub = graphModel.subscribe(() => {
+      this.updateViewData(graphModel.toGraphViewData())
+    })
+    this.currentDataModelEntry = {
+      graphModel,
+      unsub,
     }
   }
 
@@ -258,7 +286,7 @@ export class NoteGraphView {
       .backgroundColor(style.background)
       .linkHoverPrecision(8)
       .enableNodeDrag(!!options.enableForDrag)
-      .cooldownTime(1000)
+      .cooldownTime(200)
       .d3Force('x', d3.forceX())
       .d3Force('y', d3.forceY())
       .d3Force('collide', d3.forceCollide(forceGraph.nodeRelSize()))
@@ -343,9 +371,7 @@ export class NoteGraphView {
   onInteraction(name: InteractionCallbackName, cb) {
     if (!this.interactionCallbacks[name]) this.interactionCallbacks[name] = []
     const callbackList = this.interactionCallbacks[name]
-    if (!callbackList.includes(cb)) {
-      callbackList.push(cb)
-    }
+    callbackList.push(cb)
 
     return () => {
       const pos = callbackList.indexOf(cb)

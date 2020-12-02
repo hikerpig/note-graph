@@ -20,6 +20,8 @@ type ModelComputedCache = {
   linkMap: Map<LinkId, GraphLink>
 }
 
+type DataSubscriber = (model: NoteGraphModel) => void
+
 /**
  * Can generate GraphViewModel by `toGraphViewModel`
  */
@@ -27,6 +29,8 @@ export class NoteGraphModel {
   notes: Note[]
 
   protected cache: ModelComputedCache
+
+  protected subscribers: Array<DataSubscriber> = []
 
   constructor(notes: Note[]) {
     this.notes = notes
@@ -103,5 +107,21 @@ export class NoteGraphModel {
       nodeInfos: this.cache.nodeInfos,
     }
     return vm
+  }
+
+  publishChange() {
+    this.subscribers.forEach((subscriber) => {
+      subscriber(this)
+    })
+  }
+
+  subscribe(subscriber: DataSubscriber) {
+    this.subscribers.push(subscriber)
+    return () => {
+      const pos = this.subscribers.indexOf(subscriber)
+      if (pos > -1) {
+        this.subscribers.splice(pos, 1)
+      }
+    }
   }
 }

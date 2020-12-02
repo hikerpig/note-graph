@@ -11,22 +11,25 @@ interface Props {
   onGraphViewInit?(view: NoteGraphView): void
 }
 
+/**
+ * A wrapper react component for the demo
+ */
 const GraphView = (props: Props) => {
   const graphViewWrap = useRef(null)
   const [view, setView] = useState(null)
 
-  function initView() {
+  function initNewView() {
     if (view) view.dispose()
+
     let newView: NoteGraphView
     if (props.customInitGraphView) {
       newView = props.customInitGraphView(graphViewWrap.current)
     } else {
       newView = new NoteGraphView({
         container: graphViewWrap.current,
+        graphModel: props.graphModel,
         ...(props.graphViewOptions || {}),
       })
-      newView.updateViewData(props.graphModel.toGraphViewData())
-      newView.initView()
     }
     setView(newView)
     if (props.onGraphViewInit) props.onGraphViewInit(newView)
@@ -35,7 +38,7 @@ const GraphView = (props: Props) => {
   const [style, setStyle] = useState({})
 
   useEffect(() => {
-    initView()
+    initNewView()
     return () => {
       if (view) view.dispose()
     }

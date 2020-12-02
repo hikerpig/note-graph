@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { GraphViewOptions, NoteGraphView } from '../../../src'
 import GraphView from '../components/GraphView'
@@ -20,7 +20,6 @@ export const Basic = () => {
     </div>
   )
 }
-
 
 export const EnableNodeDrag = () => {
   const graphModel = new NoteGraphModel(notes)
@@ -48,6 +47,7 @@ export const Interaction = () => {
         customInitGraphView={(container) => {
           const view = new NoteGraphView({
             container,
+            graphModel,
           })
           view.onInteraction('nodeClick', ({ node }) => {
             logNodeClick(node)
@@ -55,8 +55,6 @@ export const Interaction = () => {
           view.onInteraction('linkClick', ({ link }) => {
             logLinkClick(link)
           })
-          view.updateViewData(graphModel.toGraphViewData())
-          view.initView()
           return view
         }}
       ></GraphView>
