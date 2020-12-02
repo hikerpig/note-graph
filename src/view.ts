@@ -1,6 +1,16 @@
 import * as d3 from 'd3'
-import ForceGraph, { ForceGraphInstance, LinkObject, NodeObject } from 'force-graph'
-import { NodeId, LinkId, GraphViewModel, GraphLink, GraphViewData } from './type'
+import ForceGraph, {
+  ForceGraphInstance,
+  LinkObject,
+  NodeObject,
+} from 'force-graph'
+import {
+  NodeId,
+  LinkId,
+  GraphViewModel,
+  GraphLink,
+  GraphViewData,
+} from './type'
 import { NoteGraphModel } from './note-graph-model'
 import { RecursivePartial, mergeObjects } from './util'
 
@@ -17,11 +27,19 @@ interface GraphModelActions {
   highlightNode(model: GraphViewModel, id: NodeId | undefined): void
 }
 
-type InteractionCallbackName = 'nodeClick' | 'linkClick' | 'backgroundClick' | 'backgroundRightClick'
+type InteractionCallbackName =
+  | 'nodeClick'
+  | 'linkClick'
+  | 'backgroundClick'
+  | 'backgroundRightClick'
 
-const sizeScale = d3.scaleLinear().domain([0, 20]).range([1, 5]).clamp(true)
+const sizeScaler = d3.scaleLinear().domain([0, 20]).range([1, 4]).clamp(true)
 
-const labelAlpha = d3.scaleLinear().domain([1.2, 2]).range([0, 1]).clamp(true)
+const labelAlphaScaler = d3
+  .scaleLinear()
+  .domain([1.2, 2])
+  .range([0, 1])
+  .clamp(true)
 
 export type GraphViewOptions = {
   container: HTMLElement
@@ -71,9 +89,14 @@ export class NoteGraphView {
   model: GraphViewModel
   style: GraphViewStyle
 
-  protected currentDataModelEntry?: { graphModel: NoteGraphModel, unsub: () => void }
+  protected currentDataModelEntry?: {
+    graphModel: NoteGraphModel
+    unsub: () => void
+  }
 
-  protected interactionCallbacks: Partial<Record<InteractionCallbackName, Array<(event) => void>>> = {}
+  protected interactionCallbacks: Partial<
+    Record<InteractionCallbackName, Array<(event) => void>>
+  > = {}
 
   actions: GraphModelActions = {
     selectNode(model: GraphViewModel, nodeId: NodeId | undefined, isAppend) {
@@ -117,28 +140,46 @@ export class NoteGraphView {
 
   protected initStyle() {
     if (!this.style) {
+      const highlightedForeground = this.getColorOnContainer(
+        '--notegraph-highlighted-foreground-color',
+        '#f9c74f'
+      )
       this.style = {
-        background: this.getColorOnContainer(`--notegraph-background`, '#f7f7f7'),
-        fontSize: parseInt(this.getColorOnContainer(`--notegraph-font-size`, 12)),
-        highlightedForeground: this.getColorOnContainer(
-          '--notegraph-highlighted-foreground-color',
-          '#f9c74f'
+        background: this.getColorOnContainer(
+          `--notegraph-background`,
+          '#f7f7f7'
         ),
+        fontSize: parseInt(
+          this.getColorOnContainer(`--notegraph-font-size`, 12)
+        ),
+        highlightedForeground,
         node: {
           note: {
-            regular: this.getColorOnContainer('--notegraph-note-color-regular', '#277da1'),
+            regular: this.getColorOnContainer(
+              '--notegraph-note-color-regular',
+              '#277da1'
+            ),
           },
-          unknown: this.getColorOnContainer('--notegraph-unkown-node-color', '#f94144'),
+          unknown: this.getColorOnContainer(
+            '--notegraph-unkown-node-color',
+            '#f94144'
+          ),
         },
         link: {
-          regular: this.getColorOnContainer('--notegraph-link-color-regular', '#999'),
-          highlighted: this.getColorOnContainer('--notegraph-link-color-highlighted', '#999'),
+          regular: this.getColorOnContainer(
+            '--notegraph-link-color-regular',
+            '#ccc'
+          ),
+          highlighted: this.getColorOnContainer(
+            '--notegraph-link-color-highlighted',
+            highlightedForeground
+          ),
         },
         hoverNodeLink: {
           highlightedWithDirection: {
             inbound: '#3078cd',
-          }
-        }
+          },
+        },
       }
     }
     mergeObjects<GraphViewStyle>(this.style, this.options.style)
@@ -170,10 +211,7 @@ export class NoteGraphView {
   }
 
   protected getColorOnContainer(name, fallback): string {
-    return (
-      getComputedStyle(this.container).getPropertyValue(name) ||
-      fallback
-    )
+    return getComputedStyle(this.container).getPropertyValue(name) || fallback
   }
 
   updateViewData(dataInput: GraphViewData) {
@@ -186,7 +224,7 @@ export class NoteGraphView {
 
   initView() {
     const { options, model, style, actions } = this
-    const forceGraph = ForceGraph()
+    const forceGraph = this.forceGraph || ForceGraph()
 
     const makeDrawWrapper = (ctx) => ({
       circle: function (x, y, radius, color) {
@@ -215,7 +253,12 @@ export class NoteGraphView {
         case 'regular':
           return { fill: typeFill, border: typeFill }
         case 'lessened':
-          const color = noteStyle.lessened || d3.hsl(typeFill).darker(3)
+          let color = noteStyle.lessened
+          if (!color) {
+            const c = d3.hsl(typeFill)
+            c.opacity = 0.2
+            color = c
+          }
           return { fill: color, border: color }
         case 'highlighted':
           return {
@@ -229,7 +272,7 @@ export class NoteGraphView {
 
     function getLinkNodeId(v: LinkObject['source']) {
       const t = typeof v
-      return (t === 'string' || t === 'number') ? v: (v as NodeObject).id
+      return t === 'string' || t === 'number' ? v : (v as NodeObject).id
     }
 
     function getLinkColor(link: LinkObject, model: GraphViewModel) {
@@ -238,19 +281,30 @@ export class NoteGraphView {
         case 'regular':
           return linkStyle.regular
         case 'highlighted':
-
           // inbound/outbound link is a little bit different with hoverNode
           let linkColorByDirection: string
           const hoverNodeLinkStyle = style.hoverNodeLink
           if (model.hoverNode === getLinkNodeId(link.source)) {
-            linkColorByDirection = hoverNodeLinkStyle.highlightedWithDirection?.outbound
+            linkColorByDirection =
+              hoverNodeLinkStyle.highlightedWithDirection?.outbound
           } else if (model.hoverNode === getLinkNodeId(link.target)) {
-            linkColorByDirection = hoverNodeLinkStyle.highlightedWithDirection?.inbound
+            linkColorByDirection =
+              hoverNodeLinkStyle.highlightedWithDirection?.inbound
           }
 
-          return linkColorByDirection || linkStyle.highlighted || style.highlightedForeground
+          return (
+            linkColorByDirection ||
+            linkStyle.highlighted ||
+            style.highlightedForeground
+          )
         case 'lessened':
-          return linkStyle.lessened || d3.hsl(style.node.note.lessened).darker(2)
+          let color = linkStyle.lessened
+          if (!color) {
+            const c = d3.hsl(style.node.note.lessened)
+            c.opacity = 0.2
+            color = c
+          }
+          return color
         default:
           throw new Error(`Unknown type for link ${link}`)
       }
@@ -274,10 +328,15 @@ export class NoteGraphView {
         : 'lessened'
     }
 
-    const width = options.width || window.innerWidth - this.container.offsetLeft - 20
-    const height = options.height || window.innerHeight - this.container.offsetTop - 20
+    const width =
+      options.width || window.innerWidth - this.container.offsetLeft - 20
+    const height =
+      options.height || window.innerHeight - this.container.offsetTop - 20
 
     let hasInitialZoomToFit = false
+
+    // const randomId = Math.floor(Math.random() * 1000)
+    // console.log('initView', randomId)
 
     forceGraph(this.container)
       .height(height)
@@ -298,14 +357,19 @@ export class NoteGraphView {
       .nodeCanvasObject((node, ctx, globalScale) => {
         if (!node.id) return
         const info = this.model.nodeInfos[node.id]
-        const size = sizeScale(info.neighbors ? info.neighbors.length : 1)
+        const size = sizeScaler(info.neighbors ? info.neighbors.length : 1)
         const { fill, border } = getNodeColor(node.id, model)
         const fontSize = style.fontSize / globalScale
         let textColor = d3.rgb(fill)
+        const nodeState = getNodeState(node.id, model)
+        const alphaByDistance = labelAlphaScaler(globalScale)
         textColor.opacity =
-          getNodeState(node.id, model) === 'highlighted'
+          nodeState === 'highlighted'
             ? 1
-            : labelAlpha(globalScale)
+            : nodeState === 'lessened'
+            ? Math.min(0.2, alphaByDistance)
+            : alphaByDistance
+
         const label = info.title
 
         makeDrawWrapper(ctx)
@@ -313,7 +377,9 @@ export class NoteGraphView {
           .circle(node.x, node.y, size, fill)
           .text(label, node.x, node.y + size + 1, fontSize, textColor)
       })
-      .linkColor((link) => getLinkColor(link as GraphLink, this.model))
+      .linkColor((link) => {
+        return getLinkColor(link as GraphLink, this.model)
+      })
       .onEngineStop(() => {
         if (!hasInitialZoomToFit) {
           hasInitialZoomToFit = true

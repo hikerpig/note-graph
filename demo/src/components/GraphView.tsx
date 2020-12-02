@@ -19,7 +19,9 @@ const GraphView = (props: Props) => {
   const [view, setView] = useState(null)
 
   function initNewView() {
-    if (view) view.dispose()
+    if (view) {
+      view.dispose()
+    }
 
     let newView: NoteGraphView
     if (props.customInitGraphView) {
@@ -40,7 +42,6 @@ const GraphView = (props: Props) => {
   useEffect(() => {
     initNewView()
     return () => {
-      if (view) view.dispose()
     }
   }, [graphViewWrap])
 
@@ -49,6 +50,12 @@ const GraphView = (props: Props) => {
 
     view.updateStyle(style)
   }, [style])
+
+  useEffect(() => {
+    return () => {
+      if (view) view.dispose()
+    }
+  })
 
   return (
     <div className="graph-view">

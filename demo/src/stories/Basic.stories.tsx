@@ -2,7 +2,8 @@ import React from 'react'
 import { action } from '@storybook/addon-actions'
 import { GraphViewOptions, NoteGraphView } from '../../../src'
 import GraphView from '../components/GraphView'
-import notes from '../data/example-notes'
+import notes from '../data/example-notes.json'
+import FOAM_NOTES from '../data/foam-notes.json'
 import { NoteGraphModel } from '../note-graph'
 
 export default {
