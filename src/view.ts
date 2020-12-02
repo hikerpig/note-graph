@@ -31,8 +31,10 @@ export type GraphViewOptions = {
 }
 
 export type GraphViewStyle = {
+  /** canvas background */
   background: string
   fontSize: number
+  /** node highlighted border corlor */
   highlightedForeground: string
   node: {
     note: {
@@ -40,7 +42,6 @@ export type GraphViewStyle = {
       highlighted?: string
       lessened?: string
     }
-    nonExistingNote: string
     unknown: string
   }
   link: {
@@ -105,26 +106,25 @@ export class NoteGraphView {
   protected initStyle() {
     if (!this.style) {
       this.style = {
-        background: this.getColorOnContainer(`--vscode-panel-background`, '#f7f7f7'),
-        fontSize: parseInt(this.getColorOnContainer(`--vscode-font-size`, 12)),
+        background: this.getColorOnContainer(`--notegraph-background`, '#f7f7f7'),
+        fontSize: parseInt(this.getColorOnContainer(`--notegraph-font-size`, 12)),
         highlightedForeground: this.getColorOnContainer(
-          '--vscode-list-highlightForeground',
+          '--notegraph-highlighted-foreground-color',
           '#f9c74f'
         ),
         node: {
           note: {
-            regular: this.getColorOnContainer('--vscode-editor-foreground', '#277da1'),
+            regular: this.getColorOnContainer('--notegraph-note-color-regular', '#277da1'),
           },
-          nonExistingNote: this.getColorOnContainer(
-            '--vscode-list-deemphasizedForeground',
-            '#545454'
-          ),
-          unknown: this.getColorOnContainer('--vscode-editor-foreground', '#f94144'),
+          unknown: this.getColorOnContainer('--notegraph-unkown-node-color', '#f94144'),
         },
-        link: {},
+        link: {
+          regular: this.getColorOnContainer('--notegraph-link-color-regular', '#999'),
+          highlighted: this.getColorOnContainer('--notegraph-link-color-highlighted', '#999'),
+        },
         hoverNodeLink: {
           highlightedWithDirection: {
-            inbound: '#3078cd'
+            inbound: '#3078cd',
           }
         }
       }
@@ -143,7 +143,7 @@ export class NoteGraphView {
 
   protected getColorOnContainer(name, fallback): string {
     return (
-      getComputedStyle(document.documentElement).getPropertyValue(name) ||
+      getComputedStyle(this.container).getPropertyValue(name) ||
       fallback
     )
   }
@@ -208,7 +208,7 @@ export class NoteGraphView {
       const linkStyle = style.link
       switch (getLinkState(link, model)) {
         case 'regular':
-          return linkStyle.regular || '#999'
+          return linkStyle.regular
         case 'highlighted':
 
           // inbound/outbound link is a little bit different with hoverNode

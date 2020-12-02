@@ -1,0 +1,44 @@
+import { Meta, Story } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="On Theming" />
+
+# On Theming
+
+You can specify the theme/style by passing `options.style` to `NoteGraphiew`constructor.
+
+```ts
+new NoteGraphView({
+  ...
+  style, // see GraphViewStyle 
+})
+```
+
+```ts
+type GraphViewStyle = {
+  /** canvas background */
+  background: string
+  fontSize: number
+  /** node highlighted border corlor */
+  highlightedForeground: string
+  node: {
+    note: {
+      regular: string
+      highlighted?: string
+      lessened?: string
+    }
+    unknown: string
+  }
+  link: {
+    regular?: string
+    highlighted?: string
+    lessened?: string
+  }
+  hoverNodeLink: {
+    highlightedWithDirection?: {
+      inbound?: string
+      outbound?: string
+    }
+  }
+}
+```
