@@ -33,14 +33,6 @@ type InteractionCallbackName =
   | 'backgroundClick'
   | 'backgroundRightClick'
 
-const sizeScaler = d3.scaleLinear().domain([0, 20]).range([1, 5]).clamp(true)
-
-const labelAlphaScaler = d3
-  .scaleLinear()
-  .domain([1.2, 2])
-  .range([0, 1])
-  .clamp(true)
-
 export type GraphViewOptions = {
   container: HTMLElement
   lazyInitView?: boolean
@@ -88,6 +80,14 @@ export class NoteGraphView {
   forceGraph: ForceGraphInstance
   model: GraphViewModel
   style: GraphViewStyle
+
+  protected sizeScaler = d3.scaleLinear().domain([0, 20]).range([1, 5]).clamp(true)
+
+  protected labelAlphaScaler = d3
+    .scaleLinear()
+    .domain([1.2, 2])
+    .range([0, 1])
+    .clamp(true)
 
   protected currentDataModelEntry?: {
     graphModel: NoteGraphModel
@@ -234,7 +234,10 @@ export class NoteGraphView {
 
   initView() {
     const { options, model, style, actions } = this
-    const forceGraph = this.forceGraph || ForceGraph()
+    // this runtime dependency may not be ready when this umd file excutes,
+    // so we will retrieve it from the global scope
+    const forceGraphFactory = ForceGraph || globalThis.ForceGraph
+    const forceGraph = this.forceGraph || forceGraphFactory()
 
     const makeDrawWrapper = (ctx) => ({
       circle: function (x, y, radius, color) {
@@ -367,12 +370,12 @@ export class NoteGraphView {
       .nodeCanvasObject((node, ctx, globalScale) => {
         if (!node.id) return
         const info = this.model.nodeInfos[node.id]
-        const size = sizeScaler(info.neighbors ? info.neighbors.length : 1)
+        const size = this.sizeScaler(info.neighbors ? info.neighbors.length : 1)
         const { fill, border } = getNodeColor(node.id, model)
         const fontSize = style.fontSize / globalScale
         let textColor = d3.rgb(fill)
         const nodeState = getNodeState(node.id, model)
-        const alphaByDistance = labelAlphaScaler(globalScale)
+        const alphaByDistance = this.labelAlphaScaler(globalScale)
         textColor.opacity =
           nodeState === 'highlighted'
             ? 1
