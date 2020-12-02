@@ -222,6 +222,16 @@ export class NoteGraphView {
     }
   }
 
+  updateCanvasSize(size: Partial<{ width: number, height: number }>) {
+    if (!this.forceGraph) return
+    if ('width' in size) {
+      this.forceGraph.width(size.width)
+    }
+    if ('height' in size) {
+      this.forceGraph.height(size.height)
+    }
+  }
+
   initView() {
     const { options, model, style, actions } = this
     const forceGraph = this.forceGraph || ForceGraph()

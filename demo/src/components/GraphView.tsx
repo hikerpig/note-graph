@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { NoteGraphView, GraphViewOptions, NoteGraphModel } from '../note-graph'
+import useWindowResize from 'beautiful-react-hooks/useWindowResize'
+import useDebouncedFn from 'beautiful-react-hooks/useDebouncedFn'
 
 import StyleEditor from '../components/StyleEditor'
 
@@ -15,8 +17,8 @@ interface Props {
  * A wrapper react component for the demo
  */
 const GraphView = (props: Props) => {
-  const graphViewWrap = useRef(null)
-  const [view, setView] = useState(null)
+  const graphViewWrap = useRef<HTMLDivElement>(null)
+  const [view, setView] = useState<NoteGraphView>(null)
 
   function initNewView() {
     if (view) {
@@ -41,8 +43,7 @@ const GraphView = (props: Props) => {
 
   useEffect(() => {
     initNewView()
-    return () => {
-    }
+    return () => {}
   }, [graphViewWrap])
 
   useEffect(() => {
@@ -56,6 +57,21 @@ const GraphView = (props: Props) => {
       if (view) view.dispose()
     }
   })
+
+  let startTime = Date.now()
+  const deboundedWindowResizeHandler = useDebouncedFn(() => {
+    if (Date.now() - startTime < 2000) return
+    if (view && graphViewWrap) {
+      const width = graphViewWrap.current.clientWidth
+      const height = graphViewWrap.current.clientHeight
+      // console.log('size', width, height)
+      view.updateCanvasSize({
+        width,
+        height,
+      })
+    }
+  }, 300)
+  useWindowResize(deboundedWindowResizeHandler)
 
   return (
     <div className="graph-view">

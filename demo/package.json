@@ -17,6 +17,7 @@
     "@storybook/addon-links": "^6.1.9",
     "@storybook/addon-storysource": "^6.1.9",
     "@storybook/react": "^6.1.9",
+    "@storybook/theming": "^6.1.9",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^4.9.0",
     "babel-eslint": "^10.1.0",
@@ -41,5 +42,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "dependencies": {
+    "beautiful-react-hooks": "^0.31.0"
+  }
 }

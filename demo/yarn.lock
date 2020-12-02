@@ -1988,7 +1988,7 @@
     regenerator-runtime "^0.13.7"
     source-map "^0.7.3"
 
-"@storybook/theming@6.1.9":
+"@storybook/theming@6.1.9", "@storybook/theming@^6.1.9":
   version "6.1.9"
   resolved "https://registry.npmjs.org/@storybook/theming/-/theming-6.1.9.tgz#8c584aa623f3d6e33b1e3b3de2ec1f41bdc5d9ab"
   integrity sha512-orzMQkyEhAQEi0E9iwmUkzh5yPHoYGBz17t2aydDeT6oGKii6if8Mq2oPVycfVKZ84QO7GFAS9q1nVCRcuD8oA==
@@ -3266,6 +3266,14 @@ batch-processor@1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/batch-processor/-/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
   integrity sha1-dclcMrdI4IUNEMKxaPa9vpiRrOg=
+
+beautiful-react-hooks@^0.31.0:
+  version "0.31.0"
+  resolved "https://registry.npmjs.org/beautiful-react-hooks/-/beautiful-react-hooks-0.31.0.tgz#70a6ae01dc68289219fad0ea13a087a169e5b407"
+  integrity sha512-LfMsMzF1rnaUlaEu7qKADUzi+FVDALN60/i0wuqBM4iSb9dYjcH9Scf8vDYZ690NuzfArIZO63IKpeZqODFl8A==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    lodash.throttle "^4.1.1"
 
 better-opn@^2.0.0:
   version "2.1.1"
@@ -6731,6 +6739,16 @@ lodash-es@^4.17.15:
   version "4.17.15"
   resolved "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
   integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
+
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
 lodash.uniq@4.5.0:
   version "4.5.0"
