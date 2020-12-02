@@ -1,6 +1,5 @@
 # Welcome to note-graph 👋
 
-![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
 Note Graph is a generic visualization tool designed to show the structure of the document space and the relations between each doc.
@@ -11,9 +10,10 @@ It is based on D3 [force-graph](https://github.com/vasturiano/force-graph), writ
 
 Inspired by [Foam](https://github.com/foambubble/foam).
 
-## Demo 🚀
+## Demo and docs 🚀
 
-See the [demo on vercel](http://note-graph.vercel.app/).
+See the [demo](http://note-graph.vercel.app/) on vercel.
+
 ## Develop
 
 Install dependendies:

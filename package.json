@@ -1,5 +1,6 @@
 {
   "name": "note-graph",
+  "description": "a generic visualization tool designed to show the structure of the document space and the relations between each doc",
   "version": "0.0.1",
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -16,12 +17,18 @@
   ],
   "typings": "dist/type.d.ts",
   "author": "hikerpig",
+  "keywords": [
+    "graph",
+    "visualization",
+    "foam"
+  ],
   "dependencies": {
     "d3": "^6.2.0",
     "force-graph": "^1.35.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
     "@typescript-eslint/parser": "^4.9.0",
     "core-js": "3",
     "eslint": "^7.14.0",
