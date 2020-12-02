@@ -5,13 +5,15 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "cd demo && yarn start",
-    "build": "microbundle --name NOTE_GRAPH",
+    "build": "microbundle --name NOTE_GRAPH --no-compress",
     "build-demo": "cd demo && yarn build",
     "ci-build": "cd demo && yarn && yarn build",
     "lint": "eslint src/**/*.ts"
   },
   "source": "src/index.ts",
+  "main": "dist/note-graph.js",
   "umd:main": "dist/note-graph.umd.js",
+  "module": "dist/note-graph.esm.js",
   "files": [
     "dist"
   ],
