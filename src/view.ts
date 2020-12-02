@@ -56,6 +56,10 @@ export type GraphViewStyle = {
   }
 }
 
+/**
+ * The view of the graph.
+ * Wraps a d3 force-graph inside
+ */
 export class NoteGraphView {
   options: GraphViewOptions
   container: HTMLElement
