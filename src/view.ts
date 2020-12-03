@@ -1,4 +1,6 @@
-import * as d3 from 'd3'
+import { hsl, rgb } from 'd3-color'
+import { forceX, forceY, forceCollide } from 'd3-force'
+import { scaleLinear } from 'd3-scale'
 import ForceGraph, {
   ForceGraphInstance,
   LinkObject,
@@ -75,14 +77,12 @@ export class NoteGraphView {
   model: GraphViewModel
   style: GraphViewStyle
 
-  protected sizeScaler = d3
-    .scaleLinear()
+  protected sizeScaler = scaleLinear()
     .domain([0, 20])
     .range([1, 5])
     .clamp(true)
 
-  protected labelAlphaScaler = d3
-    .scaleLinear()
+  protected labelAlphaScaler = scaleLinear()
     .domain([1.2, 2])
     .range([0, 1])
     .clamp(true)
@@ -164,9 +164,9 @@ export class NoteGraphView {
         case 'regular':
           return { fill: typeFill, border: typeFill }
         case 'lessened':
-          let color = noteStyle.lessened
+          let color: any = noteStyle.lessened
           if (!color) {
-            const c = d3.hsl(typeFill)
+            const c = hsl(typeFill)
             c.opacity = 0.2
             color = c
           }
@@ -189,7 +189,7 @@ export class NoteGraphView {
         const size = this.sizeScaler(info.neighbors ? info.neighbors.length : 1)
         const { fill, border } = getNodeColor(node.id, this.model)
         const fontSize = this.style.fontSize / globalScale
-        let textColor = d3.rgb(fill)
+        let textColor = rgb(fill)
         const nodeState = this.getNodeState(node.id, this.model)
         const alphaByDistance = this.labelAlphaScaler(globalScale)
         textColor.opacity =
@@ -275,9 +275,9 @@ export class NoteGraphView {
       .linkHoverPrecision(8)
       .enableNodeDrag(!!options.enableNodeDrag)
       .cooldownTime(200)
-      .d3Force('x', d3.forceX())
-      .d3Force('y', d3.forceY())
-      .d3Force('collide', d3.forceCollide(forceGraph.nodeRelSize()))
+      .d3Force('x', forceX())
+      .d3Force('y', forceY())
+      .d3Force('collide', forceCollide(forceGraph.nodeRelSize()))
       .linkWidth(1)
       .linkDirectionalParticles(1)
       .linkDirectionalParticleWidth((link) =>
@@ -362,9 +362,9 @@ export class NoteGraphView {
           style.highlightedForeground
         )
       case 'lessened':
-        let color = linkStyle.lessened
+        let color: any = linkStyle.lessened
         if (!color) {
-          const c = d3.hsl(style.node.note.lessened)
+          const c = hsl(style.node.note.lessened)
           c.opacity = 0.2
           color = c
         }

@@ -5,7 +5,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "cd demo && yarn start",
-    "build": "microbundle --name NOTE_GRAPH --no-compress --globas d3=d3",
+    "build": "microbundle --name NOTE_GRAPH --no-compress --globals d3-force=d3,d3-scale=d3,d3-color=d3",
     "build-demo": "cd demo && yarn build",
     "ci-build": "cd demo && yarn && yarn build",
     "lint": "eslint src/**/*.ts"
@@ -30,11 +30,17 @@
   },
   "dependencies": {
     "d3": "^6.2.0",
+    "d3-color": "^2.0.0",
+    "d3-force": "^2.1.1",
+    "d3-scale": "^3.2.3",
     "force-graph": "^1.35.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-typescript": "^7.12.7",
+    "@types/d3-color": "^2.0.1",
+    "@types/d3-force": "^2.1.0",
+    "@types/d3-scale": "^3.2.1",
     "@typescript-eslint/parser": "^4.9.0",
     "core-js": "3",
     "eslint": "^7.14.0",

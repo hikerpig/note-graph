@@ -12,7 +12,7 @@
       async function initGraphView() {
         const notes = await (
           await fetch(
-            'https://raw.githubusercontent.com/hikerpig/note-graph/master/demo/src/data/concept-data.json'
+            'https://note-graph.vercel.app/data/concept-data.json'
           )
         ).json()
         const graphModel = new NOTE_GRAPH.NoteGraphModel(notes)
