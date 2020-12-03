@@ -397,6 +397,16 @@ export class NoteGraphView {
     model.focusLinks = focusLinks
   }
 
+  /**
+   * Select nodes to gain more initial attention
+   */
+  setSelectedNodes(nodeIds: NodeId[], isAppend = false) {
+    if (!isAppend) this.model.selectedNodes.clear()
+
+    nodeIds.forEach(nodeId => this.actions.selectNode(this.model, nodeId, true))
+    this.updateViewModeInteractiveState()
+  }
+
   onInteraction(name: InteractionCallbackName, cb) {
     if (!this.interactionCallbacks[name]) this.interactionCallbacks[name] = []
     const callbackList = this.interactionCallbacks[name]

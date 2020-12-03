@@ -13,10 +13,16 @@ export default {
 
 export const Basic = () => {
   const graphModel = new NoteGraphModel(CONCEPT_DATA)
+  const noteGraphNode = CONCEPT_DATA.find(o => o.title === 'Note Graph')
   return (
     <div>
       <GraphView
         graphModel={graphModel}
+        onGraphViewInit={(view) => {
+          if (noteGraphNode) {
+            view.setSelectedNodes([noteGraphNode.id])
+          }
+        }}
       ></GraphView>
     </div>
   )

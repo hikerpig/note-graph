@@ -9,6 +9,7 @@ module.exports = {
       name: '@storybook/addon-essentials',
       options: {
         viewport: false,
+        controls: false,
       }
     }
   ],
