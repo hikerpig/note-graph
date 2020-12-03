@@ -1,7 +1,7 @@
 {
   "name": "note-graph",
   "description": "a generic visualization tool designed to show the structure of the document space and the relations between each doc",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "cd demo && yarn start",

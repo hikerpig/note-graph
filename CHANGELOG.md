@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/hikerpig/note-graph/compare/v0.0.3...v0.1.0) (2020-12-03)
+
+
+### Features
+
+* add `NoteGraphView::setSelectedNodes` method ([7c98b1c](https://github.com/hikerpig/note-graph/commit/7c98b1c0a8b7f10351431c55846d585696ce4186))
+* add smart zooming feature ([d0fd978](https://github.com/hikerpig/note-graph/commit/d0fd97888c4084e2afb92a490d93dcf7f4d21760))
+
 ### [0.0.3](https://github.com/hikerpig/note-graph/compare/v0.0.2...v0.0.3) (2020-12-02)
 
 
