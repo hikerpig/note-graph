@@ -4,8 +4,8 @@
   "scripts": {
     "start": "yarn run storybook",
     "build": "yarn run build-storybook",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public",
     "lint": "eslint src/**/*.{ts,tsx}"
   },
   "devDependencies": {

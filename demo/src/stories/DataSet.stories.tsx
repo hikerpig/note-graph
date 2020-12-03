@@ -1,6 +1,6 @@
 import React from 'react'
 import GraphView from '../components/GraphView'
-import FOAM_NOTES from '../data/foam-notes.json'
+import FOAM_NOTES from 'public/data/foam-notes.json'
 import { NoteGraphModel, GraphViewOptions } from '../note-graph'
 
 export default {

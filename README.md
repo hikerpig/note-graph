@@ -3,7 +3,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 [![CDN version](https://badgen.net/jsdelivr/v/npm/note-graph)](https://www.jsdelivr.com/package/npm/note-graph)
 
-Note Graph is a generic visualization tool designed to show the structure of the document space and the relations between each doc.
+Note Graph is a generic visualization JS lib designed to show the structure of the document space and the relations between each doc.
 
 A handy tool for anyone who is interested in building a graph view for document spaces.
 
@@ -46,7 +46,7 @@ Open [this fiddle](https://jsfiddle.net/hikerpig/3ed215um) to see how it look li
       async function initGraphView() {
         const notes = await (
           await fetch(
-            'https://raw.githubusercontent.com/hikerpig/note-graph/master/demo/src/data/concept-data.json'
+            'https://note-graph.vercel.app/data/concept-data.json'
           )
         ).json()
         const graphModel = new NOTE_GRAPH.NoteGraphModel(notes)
