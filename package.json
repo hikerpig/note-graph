@@ -5,7 +5,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "cd demo && yarn start",
-    "build": "microbundle --name NOTE_GRAPH --no-compress --globals d3-force=d3,d3-scale=d3,d3-color=d3",
+    "build": "microbundle --name NOTE_GRAPH --no-compress --no-sourcemap --globals d3-force=d3,d3-scale=d3,d3-color=d3",
     "build-demo": "cd demo && yarn build",
     "ci-build": "cd demo && yarn && yarn build",
     "lint": "eslint src/**/*.ts"
