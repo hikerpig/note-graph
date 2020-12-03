@@ -1,6 +1,7 @@
 import { hsl, rgb } from 'd3-color'
 import { forceX, forceY, forceCollide } from 'd3-force'
 import { scaleLinear } from 'd3-scale'
+import { debounce } from 'throttle-debounce'
 import ForceGraph, {
   ForceGraphInstance,
   LinkObject,
@@ -44,8 +45,8 @@ export type GraphViewOptions = {
   width?: number
   height?: number
   enableNodeDrag?: boolean
+  enableSmartZooming?: boolean
 }
-
     
 const makeDrawWrapper = (ctx) => ({
   circle: function (x, y, radius, color) {
@@ -95,6 +96,8 @@ export class NoteGraphView {
   protected interactionCallbacks: Partial<
     Record<InteractionCallbackName, Array<(event) => void>>
   > = {}
+
+  protected hasInitialZoomToFit = false
 
   actions: GraphModelActions = {
     selectNode(model: GraphViewModel, nodeId: NodeId | undefined, isAppend) {
@@ -263,8 +266,6 @@ export class NoteGraphView {
     const height =
       options.height || window.innerHeight - this.container.offsetTop - 20
 
-    let hasInitialZoomToFit = false
-
     // const randomId = Math.floor(Math.random() * 1000)
     // console.log('initView', randomId)
 
@@ -284,8 +285,8 @@ export class NoteGraphView {
         this.getLinkState(link as GraphLink, model) === 'highlighted' ? 2 : 0
       )
       .onEngineStop(() => {
-        if (!hasInitialZoomToFit) {
-          hasInitialZoomToFit = true
+        if (!this.hasInitialZoomToFit) {
+          this.hasInitialZoomToFit = true
           forceGraph.zoomToFit(1000, 20)
         }
       })
@@ -311,10 +312,72 @@ export class NoteGraphView {
         this.fireInteraction('backgroundRightClick', { event })
       })
 
+    if (options.enableSmartZooming !== false) {
+      this.initGraphSmartZooming(forceGraph)
+    }
+
     this.forceGraph = forceGraph
 
     this.refreshByStyle()
   }
+
+  protected initGraphSmartZooming(forceGraph: ForceGraphInstance) {
+    let isAdjustingZoom = false
+
+    const debouncedZoomHandler = debounce(200, (event) => {
+      if (isAdjustingZoom) return
+      const { x: xb, y: yb } = this.forceGraph.getGraphBbox()
+      // x/y here is translate, k is scale
+      const { k, x, y } = event
+      const scaledBoundL = k * xb[0]
+      const scaledBoundR = k * xb[1]
+      const scaledBoundT = k * yb[0]
+      const scaledBoundB = k * yb[1]
+      const graphCanvasW = this.forceGraph.width()
+      const graphCanvasH = this.forceGraph.height()
+
+      const oldCenter = this.forceGraph.centerAt()
+      const currentCenter = oldCenter // TODO: this is more like the center before zoom, rather than current zooming one ?
+
+      let newCenterX: number
+      let newCenterY: number
+
+      // should calculate proper center (because that's force-graph's only method...) to make the viewport fit the graphBbox
+      if (scaledBoundR + x < 0) {
+        // console.log('is out of right')
+        isAdjustingZoom = false
+        newCenterX = xb[1]
+      } else if (scaledBoundL + x > graphCanvasW) {
+        // console.log('is out of left')
+        newCenterX = xb[0]
+      }
+
+      if (scaledBoundT + y > graphCanvasH) {
+        // is out of top
+        newCenterY = yb[0]
+      } else if (scaledBoundB + y < 0) {
+        // console.log('is out of bottom')
+        newCenterY = yb[1]
+      }
+
+      if (typeof newCenterX === 'number' || typeof newCenterY === 'number') {
+        // console.log('new centerX', newCenterX, newCenterY, 'old center', oldCenter)
+        this.forceGraph.centerAt(newCenterX !== undefined ? newCenterX: currentCenter.x, newCenterY !== undefined ? newCenterY: currentCenter.y, 2000)
+      }
+    })
+
+    forceGraph
+      .onZoom((event) => {
+        if (!this.hasInitialZoomToFit) return
+        debouncedZoomHandler(event)
+      })
+      .onZoomEnd(() => {
+        setTimeout(() => {
+          isAdjustingZoom = false
+        }, 20)
+      })
+  }
+
   protected getLinkNodeId(v: LinkObject['source']) {
     const t = typeof v
     return t === 'string' || t === 'number' ? v : (v as NodeObject).id

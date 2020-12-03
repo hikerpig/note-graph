@@ -8,6 +8,19 @@ import GraphView from '../components/GraphView'
 A data model for the notes.
 
 ```ts
+export type Note = {
+  id: string
+  title: string
+  linkTo?: NodeId[]
+  referencedBy?: NodeId[]
+}
+
+class NoteGraphModel {
+  constructor(notes: Note[])
+}
+```
+
+```ts
 const notes = [
   {
     id: '9bc04ffc-9f87-5a23-ae2d-c0435696ba41',
