@@ -5,14 +5,15 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "cd demo && yarn start",
-    "build": "microbundle --name NOTE_GRAPH --no-compress --no-sourcemap --globals d3-force=d3,d3-scale=d3,d3-color=d3",
+    "build": "rollup --config build/rollup.config.js",
     "build-demo": "cd demo && yarn build",
     "ci-build": "cd demo && yarn && yarn build",
+    "prepublishOnly": "yarn build",
     "lint": "eslint src/**/*.ts"
   },
   "source": "src/index.ts",
   "main": "dist/note-graph.js",
-  "umd:main": "dist/note-graph.umd.js",
+  "browser": "dist/note-graph.umd.js",
   "module": "dist/note-graph.esm.js",
   "files": [
     "dist"
@@ -37,8 +38,10 @@
     "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-typescript": "^7.12.7",
+    "@rollup/plugin-commonjs": "^17.0.0",
     "@types/d3-color": "^2.0.1",
     "@types/d3-force": "^2.1.0",
     "@types/d3-scale": "^3.2.1",
@@ -46,7 +49,10 @@
     "core-js": "3",
     "eslint": "^7.14.0",
     "lerna": "^3.22.1",
-    "microbundle": "^0.12.4",
+    "rollup": "^2.34.1",
+    "rollup-plugin-bundle-size": "^1.0.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0",
     "typescript": "4"
   }
 }
