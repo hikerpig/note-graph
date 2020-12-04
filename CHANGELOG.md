@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/hikerpig/note-graph/compare/v0.1.0...v0.1.1) (2020-12-04)
+
+
+### Features
+
+* replace microbundle with rollup and fix UMD bundle globals problem ([c8a898b](https://github.com/hikerpig/note-graph/commit/c8a898b05a6fac21a486aa08dd9d1fb3a3bbf172))
+
 ## [0.1.0](https://github.com/hikerpig/note-graph/compare/v0.0.3...v0.1.0) (2020-12-03)
 
 
