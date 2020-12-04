@@ -1617,26 +1617,6 @@
     regenerator-runtime "^0.13.7"
     ts-dedent "^2.0.0"
 
-"@storybook/addon-storysource@^6.1.9":
-  version "6.1.9"
-  resolved "https://registry.npmjs.org/@storybook/addon-storysource/-/addon-storysource-6.1.9.tgz#9f7c50522b4de4bc90508a3882ba473bec82f435"
-  integrity sha512-xG3UAHRFfdn7dvoOjlvIHUNWgMPRLy87qjjHgmdW0jWyvGEtT7k10IRGgnozXp64ETy8dAnIyt3kmRUwXj/pkg==
-  dependencies:
-    "@storybook/addons" "6.1.9"
-    "@storybook/api" "6.1.9"
-    "@storybook/client-logger" "6.1.9"
-    "@storybook/components" "6.1.9"
-    "@storybook/router" "6.1.9"
-    "@storybook/source-loader" "6.1.9"
-    "@storybook/theming" "6.1.9"
-    core-js "^3.0.1"
-    estraverse "^4.2.0"
-    loader-utils "^2.0.0"
-    prettier "~2.0.5"
-    prop-types "^15.7.2"
-    react-syntax-highlighter "^13.5.0"
-    regenerator-runtime "^0.13.7"
-
 "@storybook/addon-toolbars@6.1.9":
   version "6.1.9"
   resolved "https://registry.npmjs.org/@storybook/addon-toolbars/-/addon-toolbars-6.1.9.tgz#99c8b48afc24773faf9490753788ee354e97f5d8"

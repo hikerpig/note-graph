@@ -9,21 +9,22 @@ A handy tool for anyone who is interested in building a graph view for document 
 
 It depends on D3.js and [force-graph](https://github.com/vasturiano/force-graph), written in Typescript and can be used in the browser.
 
-Inspired by [Foam](https://github.com/foambubble/foam).
+[![](https://i.loli.net/2020/12/04/pw5WJDlkhYsMgA2.png)](https://note-graph.vercel.app/)
 
-## Demo and docs 🚀
+## 🚀 Demo and docs
 
-See the [demo](http://note-graph.vercel.app/) on vercel.
+See the [demo](https://note-graph.vercel.app/) on vercel.
 
-## Features ✨
+## ✨ Features
 
 - Display bidirectional links with an elegant yet informative way.
 - Rich interaction
   - Hover on the node to see it's link flow.
-  - Right click on the background to make the graph auto-fits the canvas size, easier to find contents when panning and scrolling makes you lost in the view.
+  - Right click on the background to make the graph auto-fits the canvas size.
+  - Smart zooming, prevent you from getting lost when panning and scrolling.
 - 🎨 Highly customizable, pick your favorite colors for <del>all</del> (not yet but closing to it) the visual elements.
 
-## Usage
+## 📦 Usage
 
 ### (1) Use in html
 
@@ -99,6 +100,10 @@ yarn dev
 👤 **hikerpig**
 
 - Twitter: [@hikerpig](https://twitter.com/hikerpig)
+
+## Acknowledgement
+
+- Inspired by [Foam](https://github.com/foambubble/foam).
 
 ## Show your support
 
