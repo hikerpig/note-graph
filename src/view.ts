@@ -1,4 +1,4 @@
-import { hsl, rgb } from 'd3-color'
+import { hsl, rgb, HSLColor, RGBColor } from 'd3-color'
 import { forceX, forceY, forceCollide } from 'd3-force'
 import { scaleLinear } from 'd3-scale'
 import { debounce } from 'throttle-debounce'
@@ -17,6 +17,7 @@ import {
 import { NoteGraphModel } from './note-graph-model'
 import { RecursivePartial, mergeObjects } from './util'
 import { getDefaultColorOf, GraphViewStyle } from './theme'
+import { mixRgb } from './color'
 
 export type LinkState = 'regular' | 'lessened' | 'highlighted'
 
@@ -156,6 +157,8 @@ export class NoteGraphView {
   refreshByStyle() {
     if (!this.forceGraph) return
 
+    const backgroundRgb = rgb(this.style.background)
+
     const getNodeColor = (nodeId, model: GraphViewModel) => {
       const info = model.nodeInfos[nodeId]
       const noteStyle = this.style.node.note
@@ -167,11 +170,12 @@ export class NoteGraphView {
         case 'regular':
           return { fill: typeFill, border: typeFill }
         case 'lessened':
-          let color: any = noteStyle.lessened
+          let color: RGBColor | string = noteStyle.lessened
           if (!color) {
-            const c = hsl(typeFill)
-            c.opacity = 0.2
-            color = c
+            const c = rgb(typeFill)
+            // use mixing instead of opacity
+            const mixedColor = mixRgb(c, backgroundRgb, 0.6)
+            color = mixedColor
           }
           return { fill: color, border: color }
         case 'highlighted':
