@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/hikerpig/note-graph/compare/v0.1.1...v0.1.2) (2020-12-06)
+
+
+### Features
+
+* fix lessened node and link overlap bug by mixing colors rather than opacity ([a81586e](https://github.com/hikerpig/note-graph/commit/a81586e5371a9d899fda9f3b969b906480ac6fb3))
+
 ### [0.1.1](https://github.com/hikerpig/note-graph/compare/v0.1.0...v0.1.1) (2020-12-04)
 
 
