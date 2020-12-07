@@ -259,7 +259,7 @@ export class NoteGraphView {
   protected shouldDebugColor = false
 
   initView() {
-    const { options, model, style, actions } = this
+    const { options, model, actions } = this
     // this runtime dependency may not be ready when this umd file excutes,
     // so we will retrieve it from the global scope
     const forceGraphFactory = ForceGraph || globalThis.ForceGraph
@@ -295,7 +295,7 @@ export class NoteGraphView {
         }
       })
       .onNodeHover((node) => {
-        actions.highlightNode(this.model, node?.id)
+        actions.highlightNode(this.model, node ? node.id: null)
         this.updateViewModeInteractiveState()
       })
       .onNodeClick((node, event) => {
