@@ -262,7 +262,7 @@ export class NoteGraphView {
     const { options, model, actions } = this
     // this runtime dependency may not be ready when this umd file excutes,
     // so we will retrieve it from the global scope
-    const forceGraphFactory = ForceGraph || globalThis.ForceGraph
+    const forceGraphFactory = ForceGraph || (window as any).ForceGraph
     const forceGraph = this.forceGraph || forceGraphFactory()
 
     const width =
