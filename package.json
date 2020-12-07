@@ -18,7 +18,7 @@
   "files": [
     "dist"
   ],
-  "typings": "dist/type.d.ts",
+  "typings": "dist/index.d.ts",
   "author": "hikerpig",
   "keywords": [
     "graph",
