@@ -9,7 +9,7 @@ A handy tool for anyone who is interested in building a graph view for document 
 
 It depends on D3.js and [force-graph](https://github.com/vasturiano/force-graph), written in Typescript and can be used in the browser.
 
-[![](https://i.loli.net/2020/12/04/pw5WJDlkhYsMgA2.png)](https://note-graph.vercel.app/)
+[![note-graph.png](https://i.loli.net/2020/12/07/e9iKhFIvqcDOdCz.png)](https://note-graph.vercel.app/)
 
 ## 🚀 Demo and docs
 
