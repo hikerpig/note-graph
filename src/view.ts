@@ -81,7 +81,7 @@ export class NoteGraphView {
 
   protected sizeScaler = scaleLinear()
     .domain([0, 20])
-    .range([1, 5])
+    .range([1, 4])
     .clamp(true)
 
   protected labelAlphaScaler = scaleLinear()
@@ -174,7 +174,7 @@ export class NoteGraphView {
           if (!color) {
             const c = rgb(typeFill)
             // use mixing instead of opacity
-            const mixedColor = mixRgb(c, backgroundRgb, 0.6)
+            const mixedColor = mixRgb(c, backgroundRgb, 0.2)
             color = mixedColor
           }
           return { fill: color, border: color }
