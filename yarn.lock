@@ -2189,10 +2189,10 @@ before-after-hook@^2.0.0:
   resolved "https://registry.npmjs.org/before-after-hook/-/before-after-hook-2.1.0.tgz#b6c03487f44e24200dd30ca5e6a1979c5d2fb635"
   integrity sha512-IWIbu7pMqyw3EAJHzzHbWa85b6oud/yfKYg5rqB5hNE8CeMi3nX+2C2sj0HswfblST86hpVEOAb9x34NZd6P7A==
 
-bezier-js@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/bezier-js/-/bezier-js-3.1.0.tgz#bd9219bf15ecd8bd1bb15f57d85fb81b8db3fb0e"
-  integrity sha512-Mvx9eojw9MkFaDNGn4PoOQgxXGrur1jM/qHEcNwbyBwGnk3lTUS/2zcZxErnx4YsQtFejExBu7uuzdPw/iyJiQ==
+bezier-js@^4.1.0:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/bezier-js/-/bezier-js-4.1.1.tgz#414df656833104e86765c0fa5e31439fb3e83a34"
+  integrity sha512-oVOS6SSFFFlfnZdzC+lsfvhs/RRcbxJ47U04M4s5QIBaJmr3YWmTIL3qmrOK9uW+nUUcl9Jccmo/xpTrG+bBoQ==
 
 bluebird@^3.5.1, bluebird@^3.5.3, bluebird@^3.5.5:
   version "3.7.2"
@@ -2385,10 +2385,10 @@ caniuse-lite@^1.0.30001157:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001162.tgz#9f83aad1f42539ce9aab58bb177598f2f8e22ec6"
   integrity sha512-E9FktFxaNnp4ky3ucIGzEXLM+Knzlpuq1oN1sFAU0KeayygabGTmOsndpo8QrL4D9pcThlf4D2pUKaDxPCUmVw==
 
-canvas-color-tracker@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/canvas-color-tracker/-/canvas-color-tracker-1.1.3.tgz#3abe6336511dd21085f02a2d37f2143873634d4c"
-  integrity sha512-sDkzWXskrpLG1wNeZxU9bLbL+PgdaLDWYV/Q9LrY0IpYCCWHvE9c8YCukWrFQi+FT5oonxPB1b85M7GsRZVx1Q==
+canvas-color-tracker@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.npmjs.org/canvas-color-tracker/-/canvas-color-tracker-1.1.4.tgz#4f1ffce1ea91a8092b179ee73330a363a312e7db"
+  integrity sha512-Ppqr1xlcSAOGBRdKruGCyZ6oi1V19iDWrzQ6qh5ZZ4BccaUcOTGnuuCOWCDU/tWtNl57V0ZGaPt71GoL7aghoQ==
   dependencies:
     tinycolor2 "^1.4.2"
 
@@ -2770,20 +2770,27 @@ cyclist@^1.0.1:
   resolved "https://registry.npmjs.org/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-d3-array@2, d3-array@>=2.5, d3-array@^2.3.0, d3-array@^2.8.0:
+d3-array@2, d3-array@>=2.5, d3-array@^2.3.0:
   version "2.8.0"
   resolved "https://registry.npmjs.org/d3-array/-/d3-array-2.8.0.tgz#f76e10ad47f1f4f75f33db5fc322eb9ffde5ef23"
   integrity sha512-6V272gsOeg7+9pTW1jSYOR1QE37g95I3my1hBmY+vOUNHRrk9yt4OTz/gK7PMkVAVDrYYq4mq3grTiZ8iJdNIw==
+
+d3-array@^2.12.1:
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/d3-array/-/d3-array-2.12.1.tgz#e20b41aafcdffdf5d50928004ececf815a465e81"
+  integrity sha512-B0ErZK/66mHtEsR1TkPEEkwdy+WDesimkM5gpZr5Dsg54BiTA5RXtYW5qTLIAcekaS9xfZrzBLF/OAkB3Qn1YQ==
+  dependencies:
+    internmap "^1.0.0"
 
 d3-axis@2:
   version "2.0.0"
   resolved "https://registry.npmjs.org/d3-axis/-/d3-axis-2.0.0.tgz#40aebb65626ffe6d95e9441fbf9194274b328a8b"
   integrity sha512-9nzB0uePtb+u9+dWir+HTuEAKJOEUYJoEwbJPsZ1B4K3iZUgzJcSENQ05Nj7S4CIfbZZ8/jQGoUzGKFznBhiiQ==
 
-d3-binarytree@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.npmjs.org/d3-binarytree/-/d3-binarytree-0.1.8.tgz#dc8d37e7dd4a43c0e78dd99bbc4c295b935696df"
-  integrity sha512-+N2TjL9CAGMkjwlnsx/wUiHJtAnik6S63AfvWS6RYkraD60ixgI4S7q3sMR5ugLMXWckWhZfvUpZQzwAzkm/lA==
+d3-binarytree@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/d3-binarytree/-/d3-binarytree-0.2.0.tgz#10601b89fc966b22ee2bd1a8e9ee4d847dfd0014"
+  integrity sha512-Z4khfbrBgtbv0M2QSQBaIajxiT6hwkxGt0AoDnTXCWDyyH+Okqy2UU3sXzV01zL5lC75dFAMJ0ftxSKTCr28VA==
 
 d3-brush@2:
   version "2.1.0"
@@ -2856,14 +2863,14 @@ d3-fetch@2:
   dependencies:
     d3-dsv "1 - 2"
 
-d3-force-3d@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/d3-force-3d/-/d3-force-3d-2.2.0.tgz#83515f3fd98d6705442047e9eac0749dfd2654bc"
-  integrity sha512-yFuBpt4onqnVyRGN3PCW+KpeOMcMCOStvE7QIXIOUu0d+Yn4SqSnA8K6UXjYmMIVE9STtA/+MOSUOBHxbi+NAg==
+d3-force-3d@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.npmjs.org/d3-force-3d/-/d3-force-3d-2.3.2.tgz#3eba201e9f72456decb3b39c534e8ee6eb6e9a76"
+  integrity sha512-jkNDhUmSCAAq7dxtnILVzn7uOClBZt3YMhupBEoKI9RrvR3x995iUDdbj3VL33ByJAtHZwzytUxdh3zKfvf/iw==
   dependencies:
-    d3-binarytree "^0.1.8"
+    d3-binarytree "^0.2.0"
     d3-dispatch "^2.0.0"
-    d3-octree "^0.1.8"
+    d3-octree "^0.2.0"
     d3-quadtree "^2.0.0"
     d3-timer "^2.0.0"
 
@@ -2900,10 +2907,10 @@ d3-hierarchy@2:
   dependencies:
     d3-color "1 - 2"
 
-d3-octree@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.npmjs.org/d3-octree/-/d3-octree-0.1.8.tgz#a7b16d0432b9551ad2b1145f2c25b5461fd991cf"
-  integrity sha512-DCN9v/itq78qhZVbhOE/y7tLUQUHMtdKUg5N9aUDusgN5ANbNvGJFD1C6yjY8KeEoB8ONHzwN8xEoHb9Ww9joQ==
+d3-octree@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/d3-octree/-/d3-octree-0.2.0.tgz#d3b3e578733cd0bbb7b6a15f80b0d7b38ab2e54c"
+  integrity sha512-yPoIxKr4xvZNyKK2bkJybafrNKtBVERbGTUVBovyWxWDQaWnJfWO4ai1jnyBrCeMzpVm/OTAJw2V+EJ9HCuLbQ==
 
 "d3-path@1 - 2", d3-path@2:
   version "2.0.0"
@@ -2944,6 +2951,17 @@ d3-scale@3, d3-scale@^3.2.3:
     d3-time "1 - 2"
     d3-time-format "2 - 3"
 
+d3-scale@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npmjs.org/d3-scale/-/d3-scale-3.3.0.tgz#28c600b29f47e5b9cd2df9749c206727966203f3"
+  integrity sha512-1JGp44NQCt5d1g+Yy+GeOnZP7xHo0ii8zsQp6PGzd+C1/dl0KGsp9A7Mxwp+1D1o4unbTTxVdU/ZOIEBoeZPbQ==
+  dependencies:
+    d3-array "^2.3.0"
+    d3-format "1 - 2"
+    d3-interpolate "1.2.0 - 2"
+    d3-time "^2.1.1"
+    d3-time-format "2 - 3"
+
 d3-selection@2, d3-selection@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/d3-selection/-/d3-selection-2.0.0.tgz#94a11638ea2141b7565f883780dabc7ef6a61066"
@@ -2967,6 +2985,13 @@ d3-shape@2:
   version "2.0.0"
   resolved "https://registry.npmjs.org/d3-time/-/d3-time-2.0.0.tgz#ad7c127d17c67bd57a4c61f3eaecb81108b1e0ab"
   integrity sha512-2mvhstTFcMvwStWd9Tj3e6CEqtOivtD8AUiHT8ido/xmzrI9ijrUUihZ6nHuf/vsScRBonagOdj0Vv+SEL5G3Q==
+
+d3-time@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/d3-time/-/d3-time-2.1.1.tgz#e9d8a8a88691f4548e68ca085e5ff956724a6682"
+  integrity sha512-/eIQe/eR4kCQwq7yxi7z4c6qEXf2IYGcjoWB5OOQy4Tq9Uv39/947qlDcN2TLkiTzQWzvnsuYPB9TrWaNfipKQ==
+  dependencies:
+    d3-array "2"
 
 "d3-timer@1 - 2", d3-timer@2, d3-timer@^2.0.0:
   version "2.0.0"
@@ -3706,19 +3731,19 @@ for-in@^1.0.2:
   resolved "https://registry.npmjs.org/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-force-graph@^1.35.1:
-  version "1.35.1"
-  resolved "https://registry.npmjs.org/force-graph/-/force-graph-1.35.1.tgz#a6a6924230bc01557d32dd3728aa846b4c1e5793"
-  integrity sha512-I5EfALF6ewPF45F9gRe4TovjrFjdSbk6qDfRPInoE6RlIoZRwrQNGO8ze4hQQkeAElCyVo+KLkTPxLL74D+O3w==
+force-graph@^1.40.3:
+  version "1.40.3"
+  resolved "https://registry.npmjs.org/force-graph/-/force-graph-1.40.3.tgz#c49394bad53c47ea694b602793d899dd3bcef72e"
+  integrity sha512-FTGEU/QlknVHrXNzhPccCY3bXVL7ViTQaViZzHJMxE31wnSRq/y/ay5vUYnb7h6WvcCN4ilkHQEi/ipFSSlJ3w==
   dependencies:
     "@tweenjs/tween.js" "^18.6.4"
     accessor-fn "^1.3.0"
-    bezier-js "^3.1.0"
-    canvas-color-tracker "^1.1.3"
-    d3-array "^2.8.0"
+    bezier-js "^4.1.0"
+    canvas-color-tracker "^1.1.4"
+    d3-array "^2.12.1"
     d3-drag "^2.0.0"
-    d3-force-3d "^2.2.0"
-    d3-scale "^3.2.3"
+    d3-force-3d "^2.3.2"
+    d3-scale "^3.3.0"
     d3-scale-chromatic "^2.0.0"
     d3-selection "^2.0.0"
     d3-zoom "^2.0.0"
@@ -4296,6 +4321,11 @@ inquirer@^6.2.0:
     string-width "^2.1.0"
     strip-ansi "^5.1.0"
     through "^2.3.6"
+
+internmap@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/internmap/-/internmap-1.0.1.tgz#0017cc8a3b99605f0302f2b198d272e015e5df95"
+  integrity sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==
 
 ip@1.1.5:
   version "1.1.5"

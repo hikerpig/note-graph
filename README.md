@@ -37,7 +37,7 @@ Open [this fiddle](https://jsfiddle.net/hikerpig/3ed215um) to see how it look li
   <head>
     <title>Note Graph simple example</title>
     <script src="https://cdn.jsdelivr.net/npm/d3@6.2.0/dist/d3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/force-graph@1.35.1/dist/force-graph.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/force-graph@1.40.3/dist/force-graph.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/note-graph@latest/dist/note-graph.umd.js"></script>
   </head>
 
