@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/hikerpig/note-graph/compare/v0.1.5...v0.2.0) (2021-05-05)
+
+
+### Features
+
+* add option `shouldZoomToFit` for `setSelectedNodes(nodeIds, opts)` ([d3f427c](https://github.com/hikerpig/note-graph/commit/d3f427cbb70ad1393818b3a47a85054cbbd56676))
+
 ### [0.1.5](https://github.com/hikerpig/note-graph/compare/v0.1.4...v0.1.5) (2021-02-16)
 
 
