@@ -68,3 +68,24 @@ export const Interaction = () => {
     </div>
   )
 }
+
+export const SetSelectedNodesAndZoom = () => {
+  const graphModel = new NoteGraphModel(notes)
+  const noteGraphNode = notes.find(o => o.title === 'second-brain')
+  const graphViewOptions: Omit<GraphViewOptions, 'container'> = {
+    enableNodeDrag: true,
+  }
+  return (
+    <div>
+      <GraphView
+        graphModel={graphModel}
+        graphViewOptions={graphViewOptions}
+        onGraphViewInit={(view) => {
+          if (noteGraphNode) {
+            view.setSelectedNodes([noteGraphNode.id], { shouldZoomToFit: true })
+          }
+        }}
+      ></GraphView>
+    </div>
+  )
+}

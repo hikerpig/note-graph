@@ -79,6 +79,9 @@ export class NoteGraphView {
   model: GraphViewModel
   style: GraphViewStyle
 
+  private hasEngineStopped = false
+  private engineStopSizingFn: Function = null
+
   protected sizeScaler = scaleLinear()
     .domain([0, 20])
     .range([1, 4])
@@ -263,7 +266,7 @@ export class NoteGraphView {
     // this runtime dependency may not be ready when this umd file excutes,
     // so we will retrieve it from the global scope
     const forceGraphFactory = ForceGraph || (window as any).ForceGraph
-    const forceGraph = this.forceGraph || forceGraphFactory()
+    const forceGraph: ForceGraphInstance = this.forceGraph || forceGraphFactory()
 
     const width =
       options.width || window.innerWidth - this.container.offsetLeft - 20
@@ -280,18 +283,23 @@ export class NoteGraphView {
       .linkHoverPrecision(8)
       .enableNodeDrag(!!options.enableNodeDrag)
       .cooldownTime(200)
-      .d3Force('x', forceX())
-      .d3Force('y', forceY())
-      .d3Force('collide', forceCollide(forceGraph.nodeRelSize()))
+      .d3Force('x', forceX() as any)
+      .d3Force('y', forceY() as any)
+      .d3Force('collide', forceCollide(forceGraph.nodeRelSize()) as any)
       .linkWidth(1)
       .linkDirectionalParticles(1)
       .linkDirectionalParticleWidth((link) =>
         this.getLinkState(link as GraphLink, model) === 'highlighted' ? 2 : 0
       )
       .onEngineStop(() => {
-        if (!this.hasInitialZoomToFit) {
-          this.hasInitialZoomToFit = true
-          forceGraph.zoomToFit(1000, 20)
+        this.hasEngineStopped = true
+        if (this.engineStopSizingFn) {
+          this.engineStopSizingFn()
+        } else {
+          if (!this.hasInitialZoomToFit) {
+            this.hasInitialZoomToFit = true
+            forceGraph.zoomToFit(1000, 20)
+          }
         }
       })
       .onNodeHover((node) => {
@@ -467,11 +475,28 @@ export class NoteGraphView {
   /**
    * Select nodes to gain more initial attention
    */
-  setSelectedNodes(nodeIds: NodeId[], isAppend = false) {
+  setSelectedNodes(nodeIds: NodeId[], opts: { isAppend?: boolean, shouldZoomToFit?: boolean } = {}) {
+    const { isAppend, shouldZoomToFit } = opts
     if (!isAppend) this.model.selectedNodes.clear()
 
     nodeIds.forEach(nodeId => this.actions.selectNode(this.model, nodeId, true))
     this.updateViewModeInteractiveState()
+
+    if (shouldZoomToFit) {
+      const doZoomToFitFocusedNodes = () => {
+        this.forceGraph.zoomToFit(1000, 20, (node: NodeObject) => {
+          return this.model.focusNodes.has(node.id)
+        })
+      }
+      if (this.hasEngineStopped) {
+        doZoomToFitFocusedNodes()
+      } else {
+        this.engineStopSizingFn = () => {
+          doZoomToFitFocusedNodes()
+          this.engineStopSizingFn = null
+        }
+      }
+    }
   }
 
   onInteraction(name: InteractionCallbackName, cb) {
