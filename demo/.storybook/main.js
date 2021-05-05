@@ -20,4 +20,10 @@ module.exports = {
     };
     return config;
   },
+  babel: async (config) => {
+    return {
+      ...config,
+      // ...babelConfig,
+    }
+  },
 }
