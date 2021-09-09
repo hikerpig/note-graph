@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1-beta.0](https://github.com/hikerpig/note-graph/compare/v0.2.0...v0.2.1-beta.0) (2021-09-09)
+
+
+### Features
+
+* upgrade dependencies ([868b4ea](https://github.com/hikerpig/note-graph/commit/868b4eac273740444628f5b852f8a742b29db571))
+
 ## [0.2.0](https://github.com/hikerpig/note-graph/compare/v0.1.5...v0.2.0) (2021-05-05)
 
 
