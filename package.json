@@ -29,6 +29,7 @@
     "type": "git",
     "url": "https://github.com/hikerpig/note-graph.git"
   },
+  "license": "MIT",
   "dependencies": {
     "d3": "^7.0.1",
     "d3-color": "^3.0.1",
