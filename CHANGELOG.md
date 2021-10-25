@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/hikerpig/note-graph/compare/v0.3.0-beta.0...v0.3.0) (2021-10-25)
+
 # [0.3.0-beta.0](https://github.com/hikerpig/note-graph/compare/v0.2.0...v0.3.0-beta.0) (2021-09-09)
 
 
