@@ -12,6 +12,11 @@ export type Note = {
   title: string
   linkTo?: NodeId[]
   referencedBy?: NodeId[]
+  /**
+   * You can specify a different type (e.g. 'tag') for a note node.
+   * Later you can specify different node style to it.
+   */
+  type?: string
 }
 
 type ModelComputedCache = {
@@ -26,13 +31,11 @@ type DataSubscriber = (model: NoteGraphModel) => void
  * Can generate GraphViewModel by `toGraphViewModel`
  */
 export class NoteGraphModel {
-  notes: Note[]
-
   protected cache: ModelComputedCache
 
   protected subscribers: Array<DataSubscriber> = []
 
-  constructor(notes: Note[]) {
+  constructor(public notes: Note[]) {
     this.notes = notes
 
     this.updateCache()
@@ -51,6 +54,7 @@ export class NoteGraphModel {
         title: note.title,
         linkIds: [],
         neighbors: [],
+        nodeType: note.type || 'note',
       }
       if (note.linkTo) {
         note.linkTo.forEach((linkedNodeId) => {

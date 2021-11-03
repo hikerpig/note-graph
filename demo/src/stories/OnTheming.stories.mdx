@@ -5,6 +5,8 @@ import LinkTo from '@storybook/addon-links/react';
 
 # On Theming
 
+## Basic
+
 You can specify the theme/style by passing `options.style` to `NoteGraphiew`constructor.
 
 ```ts
@@ -17,19 +19,15 @@ new NoteGraphView({
 Go to <LinkTo kind="Theming" story="style-editor">Theming/StyleEditor</LinkTo> to fiddle the styles.
 
 ```ts
-type GraphViewStyle = {
+export type GraphViewStyle = {
   /** canvas background */
   background: string
   fontSize: number
   /** node highlighted border corlor */
   highlightedForeground: string
   node: {
-    note: {
-      regular: string
-      highlighted?: string
-      lessened?: string
-    }
-    unknown: string
+    note: NodeStyle
+    [key: string]: NodeStyle | string
   }
   link: {
     regular?: string
@@ -43,4 +41,31 @@ type GraphViewStyle = {
     }
   }
 }
+
+export type NodeStyle = {
+  regular: string
+  highlighted?: string
+  lessened?: string
+}
+```
+
+## Custom node styles
+
+For example, you may assign custom style to the notes with the `tag` type.
+
+To see how it looks, please go to <LinkTo kind="Example" story="styling-different-node-types">the example page</LinkTo>
+
+```ts
+new NoteGraphView({
+  ...
+  style: {
+    node: {
+      tag: {
+        regular: '#64BB00',
+        lessened: 'rgba(101, 189, 0, 0.6)',
+        highlighted: 'green',
+      }
+    }
+  }
+})
 ```

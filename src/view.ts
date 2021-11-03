@@ -16,7 +16,7 @@ import {
 } from './type'
 import { NoteGraphModel } from './note-graph-model'
 import { RecursivePartial, mergeObjects } from './util'
-import { getDefaultColorOf, GraphViewStyle } from './theme'
+import { getDefaultColorOf, GraphViewStyle, getNodeStyleByType } from './theme'
 import { mixRgb } from './color'
 
 export type LinkState = 'regular' | 'lessened' | 'highlighted'
@@ -73,11 +73,11 @@ const makeDrawWrapper = (ctx) => ({
  * Wraps a d3 force-graph inside
  */
 export class NoteGraphView {
-  options: GraphViewOptions
-  container: HTMLElement
-  forceGraph: ForceGraphInstance
-  model: GraphViewModel
-  style: GraphViewStyle
+  declare options: GraphViewOptions
+  declare container: HTMLElement
+  declare forceGraph: ForceGraphInstance
+  declare model: GraphViewModel
+  declare style: GraphViewStyle
 
   private hasEngineStopped = false
   private engineStopSizingFn: Function = null
@@ -164,8 +164,8 @@ export class NoteGraphView {
 
     const getNodeColor = (nodeId, model: GraphViewModel) => {
       const info = model.nodeInfos[nodeId]
-      const noteStyle = this.style.node.note
-      const typeFill = this.style.node.note[info.type || 'regular'] || this.style.node.unknown
+      const nodeStyle = getNodeStyleByType(this.style, info.nodeType || 'note')
+      const typeFill = nodeStyle[info.colorType || 'regular'] || this.style.node.unknown
       if (this.shouldDebugColor) {
         console.log('node fill', typeFill)
       }
@@ -173,7 +173,7 @@ export class NoteGraphView {
         case 'regular':
           return { fill: typeFill, border: typeFill }
         case 'lessened':
-          let color: RGBColor | string = noteStyle.lessened
+          let color: RGBColor | string = nodeStyle.lessened
           if (!color) {
             const c = rgb(typeFill)
             // use mixing instead of opacity

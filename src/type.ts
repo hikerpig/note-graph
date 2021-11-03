@@ -16,7 +16,8 @@ export type GraphLink = {
 export type GraphNodeInfo = {
   title: string
   linkIds?: LinkId[]
-  type?: string
+  colorType?: string
+  nodeType: string
   neighbors?: NodeId[]
 }
 

@@ -4,10 +4,11 @@
   "version": "0.3.0",
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "dev": "cd demo && yarn start",
+    "watch": "rollup --config build/rollup.config.js --watch",
+    "dev-demo": "cd demo && yarn start",
     "build": "rollup --config build/rollup.config.js",
     "build-demo": "cd demo && yarn build",
-    "ci-build": "cd demo && yarn && yarn build",
+    "ci-build": "yarn build && cd demo && yarn && yarn build",
     "prepublishOnly": "yarn build",
     "lint": "eslint src/**/*.ts"
   },
