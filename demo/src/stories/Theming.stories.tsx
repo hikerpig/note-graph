@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { NoteGraphView } from '../../../src'
 import GraphView from '../components/GraphView'
 import CONCEPT_DATA from 'public/data/concept-data.json'
 import { NoteGraphModel, GraphViewOptions } from '../note-graph'

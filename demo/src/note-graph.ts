@@ -1,2 +1,2 @@
-export * from '../../src/index'
-export type { Note, GraphViewModel}  from '../../src/index'
+export * from '../..'
+export type { Note, GraphViewModel }  from '../..'

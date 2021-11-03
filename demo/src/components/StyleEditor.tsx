@@ -2,8 +2,7 @@ import React from 'react'
 import { useDebouncedFn } from 'beautiful-react-hooks'
 import { useForm } from 'react-hook-form'
 import { RecursivePartial, mergeObjects } from '../../../src/util'
-import { GraphViewStyle } from '../note-graph'
-import { getDefaultColorOf } from '../../../src'
+import { GraphViewStyle, getDefaultColorOf } from '../note-graph'
 import './style-editor.css'
 
 export function getByPath(obj, path: string | string[], defval = null) {
@@ -23,7 +22,7 @@ const StyleEditor = (props: Props) => {
     getDefaultColorOf({}),
     props.style
   )
-  const { register, handleSubmit, watch, errors } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: style,
   })
   const onSubmit = (data) => {

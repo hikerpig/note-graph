@@ -5,12 +5,9 @@ export type GraphViewStyle = {
   /** node highlighted border corlor */
   highlightedForeground: string
   node: {
-    note: {
-      regular: string
-      highlighted?: string
-      lessened?: string
-    }
-    unknown: string
+    note: NodeStyle
+    unknown: NodeStyle | string
+    [key: string]: NodeStyle | string
   }
   link: {
     regular?: string
@@ -23,6 +20,12 @@ export type GraphViewStyle = {
       outbound?: string
     }
   }
+}
+
+export type NodeStyle = {
+  regular: string
+  highlighted?: string
+  lessened?: string
 }
 
 export function getColorOnContainer(container: HTMLElement, name, fallback): string {
@@ -79,4 +82,22 @@ export function getDefaultColorOf(opts: { container?: HTMLElement } = {}): Graph
       },
     },
   } 
+}
+
+function getNodeStyle(v: NodeStyle | string): NodeStyle {
+  const s: NodeStyle = typeof v === 'object' ? v: {
+    regular: v,
+    highlighted: v,
+    lessened: v,
+  }
+  return s
+}
+
+export function getNodeStyleByType(style: GraphViewStyle, type: string) {
+  let v = style.node[type]
+  if (!v) {
+    const unknownStyle = getNodeStyle(style.node.unknown)
+    return unknownStyle
+  }
+  return getNodeStyle(v)
 }

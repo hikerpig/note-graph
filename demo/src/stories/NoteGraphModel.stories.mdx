@@ -13,6 +13,11 @@ export type Note = {
   title: string
   linkTo?: NodeId[]
   referencedBy?: NodeId[]
+  /**
+   * You can specify a different type (e.g. 'tag') for a note node.
+   * Later you can specify different node style to it.
+   */
+  type?: string
 }
 
 class NoteGraphModel {
@@ -26,6 +31,7 @@ const notes = [
     id: '9bc04ffc-9f87-5a23-ae2d-c0435696ba41',
     title: 'browser-extension',
     linkTo: [],
+    type: 'tag',
     referencedBy: [ '7c8ba189-e781-557e-88ab-7312ea0ecfc8' ]
   },
   {
