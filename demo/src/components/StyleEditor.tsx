@@ -6,7 +6,7 @@ import { GraphViewStyle, getDefaultColorOf } from '../note-graph'
 import './style-editor.css'
 
 export function getByPath(obj, path: string | string[], defval = null) {
-  const segs = typeof path === 'string' ? (path = path.split('.')) : path
+  const segs = typeof path === 'string' ? (path.split('.')) : path
   return segs.reduce((xs, x) => (xs && xs[x] ? xs[x] : defval), obj)
 }
 
@@ -22,7 +22,7 @@ const StyleEditor = (props: Props) => {
     getDefaultColorOf({}),
     props.style
   )
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: style,
   })
   const onSubmit = (data) => {
@@ -57,7 +57,7 @@ const StyleEditor = (props: Props) => {
               <input
                 type={type}
                 name={name}
-                ref={register}
+                {...register(name as any)}
               />
               <span>{getByPath(style, propPath)}</span>
             </div>

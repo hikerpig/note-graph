@@ -12,14 +12,14 @@ export default {
 
 export const Basic = () => {
   const graphModel = new NoteGraphModel(CONCEPT_DATA)
-  const noteGraphNode = CONCEPT_DATA.find((o) => o.title === 'Note Graph')
+  const noteGraphNote = CONCEPT_DATA.find((o) => o.title === 'Note Graph')
   return (
     <div>
       <GraphView
         graphModel={graphModel}
         onGraphViewInit={(view) => {
-          if (noteGraphNode) {
-            view.setSelectedNodes([noteGraphNode.id])
+          if (noteGraphNote) {
+            view.setSelectedNodes([noteGraphNote.id])
           }
         }}
       ></GraphView>
@@ -70,7 +70,7 @@ export const Interaction = () => {
 
 export const SetSelectedNodesAndZoom = () => {
   const graphModel = new NoteGraphModel(notes)
-  const noteGraphNode = notes.find((o) => o.title === 'second-brain')
+  const noteGraphNote = notes.find((o) => o.title === 'second-brain')
   const graphViewOptions: Omit<GraphViewOptions, 'container'> = {
     enableNodeDrag: true,
   }
@@ -80,8 +80,8 @@ export const SetSelectedNodesAndZoom = () => {
         graphModel={graphModel}
         graphViewOptions={graphViewOptions}
         onGraphViewInit={(view) => {
-          if (noteGraphNode) {
-            view.setSelectedNodes([noteGraphNode.id], { shouldZoomToFit: true })
+          if (noteGraphNote) {
+            view.setSelectedNodes([noteGraphNote.id], { shouldZoomToFit: true })
           }
         }}
       ></GraphView>
@@ -95,8 +95,11 @@ export const StylingDifferentNodeTypes = () => {
     type: ['JS Lib', 'Visualization'].includes(o.title) ? 'tag' : 'note',
   }))
 
+  const noteGraphNote = localNotes.find((o) => o.title === 'Note Graph')
+  noteGraphNote.nodeStyle = {
+    regular: '#E94780',
+  }
   const graphModel = new NoteGraphModel(localNotes)
-  const noteGraphNode = localNotes.find((o) => o.title === 'Note Graph')
 
   const tagStyle: NodeStyle = {
     regular: '#64BB00',
@@ -116,8 +119,8 @@ export const StylingDifferentNodeTypes = () => {
         graphModel={graphModel}
         style={localStyle}
         onGraphViewInit={(view) => {
-          if (noteGraphNode) {
-            view.setSelectedNodes([noteGraphNode.id])
+          if (noteGraphNote) {
+            view.setSelectedNodes([noteGraphNote.id])
           }
         }}
       ></GraphView>

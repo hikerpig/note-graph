@@ -164,7 +164,7 @@ export class NoteGraphView {
 
     const getNodeColor = (nodeId, model: GraphViewModel) => {
       const info = model.nodeInfos[nodeId]
-      const nodeStyle = getNodeStyleByType(this.style, info.nodeType || 'note')
+      const nodeStyle = info.nodeStyle || getNodeStyleByType(this.style, info.nodeType || 'note')
       const typeFill = nodeStyle[info.colorType || 'regular'] || this.style.node.unknown
       if (this.shouldDebugColor) {
         console.log('node fill', typeFill)
