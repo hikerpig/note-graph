@@ -1,3 +1,4 @@
+import { NodeStyle } from './theme';
 import {
   NodeId,
   GraphNode,
@@ -17,6 +18,7 @@ export type Note = {
    * Later you can specify different node style to it.
    */
   type?: string
+  nodeStyle?: NodeStyle
 }
 
 type ModelComputedCache = {
@@ -55,6 +57,7 @@ export class NoteGraphModel {
         linkIds: [],
         neighbors: [],
         nodeType: note.type || 'note',
+        nodeStyle: note.nodeStyle,
       }
       if (note.linkTo) {
         note.linkTo.forEach((linkedNodeId) => {

@@ -1,3 +1,5 @@
+import { NodeStyle } from "./theme"
+
 export type NodeId = string | number
 
 export type LinkId = string | number
@@ -19,6 +21,7 @@ export type GraphNodeInfo = {
   colorType?: string
   nodeType: string
   neighbors?: NodeId[]
+  nodeStyle?: NodeStyle
 }
 
 export type NoteGraphData = {

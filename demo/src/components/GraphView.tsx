@@ -17,11 +17,11 @@ interface Props {
 const GraphView = (props: Props) => {
   const { style } = props
   const graphViewWrap = useRef<HTMLDivElement>(null)
-  const [view, setView] = useState<NoteGraphView>(null)
+  const viewRef = useRef<NoteGraphView>(null)
 
   function initNewView() {
-    if (view) {
-      view.dispose()
+    if (viewRef.current) {
+      viewRef.current.dispose()
     }
 
     let newView: NoteGraphView
@@ -35,13 +35,13 @@ const GraphView = (props: Props) => {
         ...(props.graphViewOptions || {}),
       })
     }
-    setView(newView)
+    viewRef.current = newView
     if (props.onGraphViewInit) props.onGraphViewInit(newView)
   }
 
   useEffect(() => {
-    if (view) {
-      view.updateStyle(style)
+    if (viewRef.current) {
+      viewRef.current.updateStyle(style)
     }
     return () => {
     };
@@ -54,19 +54,18 @@ const GraphView = (props: Props) => {
 
   useEffect(() => {
     return () => {
-      // console.log('graph view cleanup')
-      if (view) view.dispose()
+      if (viewRef.current) viewRef.current.dispose()
     }
   }, [])
 
   let startTime = Date.now()
   const deboundedWindowResizeHandler = useDebouncedFn(() => {
     if (Date.now() - startTime < 2000) return
-    if (view && graphViewWrap) {
+    if (viewRef.current && graphViewWrap) {
       const width = graphViewWrap.current.clientWidth
       const height = graphViewWrap.current.clientHeight
       // console.log('size', width, height)
-      view.updateCanvasSize({
+      viewRef.current.updateCanvasSize({
         width,
         height,
       })

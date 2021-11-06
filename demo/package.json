@@ -44,6 +44,6 @@
   ],
   "dependencies": {
     "beautiful-react-hooks": "^1.0.0",
-    "react-hook-form": "^7.15.2"
+    "react-hook-form": "^7.19.0"
   }
 }
