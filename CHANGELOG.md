@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [0.4.0-beta.0](https://github.com/hikerpig/note-graph/compare/v0.3.0...v0.4.0-beta.0) (2021-11-07)
+
+
+### Features
+
+* now we can assign custom styling to different note types ([170bdb5](https://github.com/hikerpig/note-graph/commit/170bdb51f32eb8bb3f11f68978c9dd292baa1885))
+* we can assign `nodeStyle` to each note ([6e8468c](https://github.com/hikerpig/note-graph/commit/6e8468c4902ecb6c04b1f0436d504d0e0a75f338))
+
+
+
 ## [0.3.0](https://github.com/hikerpig/note-graph/compare/v0.3.0-beta.0...v0.3.0) (2021-10-25)
 
 # [0.3.0-beta.0](https://github.com/hikerpig/note-graph/compare/v0.2.0...v0.3.0-beta.0) (2021-09-09)
